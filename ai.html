@@ -65,7 +65,7 @@ footer{text-align:center;padding:20px 0 40px;color:#4a5a6a;font-size:.8rem}
 
 <div class="blocked" id="blocked" style="display:none">
 <h2>Hakların bitti</h2>
-<p>Bugünkü 5 soru hakkını kullandın.<br>Yarın tekrar gelebilirsin. Acil için WhatsApp: 0533 259 50 42</p>
+<p>Bugünkü 5 soru hakkını kullandın.<br>Yarın tekrar gelebilirsin. Acil için <a href="https://wa.me/905332595042" target="_blank" style="color:#00b4ff">WhatsApp</a></p>
 </div>
 
 <p class="hint">IP + gün bazlı limit • Teknik cevaplar yaklaşık değerdir</p>
@@ -75,7 +75,8 @@ footer{text-align:center;padding:20px 0 40px;color:#4a5a6a;font-size:.8rem}
 
 <script>
 const MAX = 5;
-const VIP_IPS = ['46.154.123.127']; // sınırsız hak
+const VIP_IPS = ['46.154.123.127'];
+const WP = '<a href="https://wa.me/905332595042" target="_blank" style="color:#00b4ff">WhatsApp</a>';
 let userIP = 'unknown';
 let isVIP = false;
 let remaining = MAX;
@@ -108,7 +109,7 @@ function loadUsage(){
 }
 
 function saveUse(){
-  if(isVIP) return; // VIP sayılmaz
+  if(isVIP) return;
   const used = MAX-remaining+1;
   localStorage.setItem(storageKey(), String(used));
   remaining = Math.max(0, MAX-used);
@@ -239,10 +240,10 @@ function answer(q){
     return 'Rica ederim 👊 Başka soru kalırsa yaz. İyi oyunlar!';
 
   if(has(t, ['whatsapp','wp','numara','iletisim','ulas','telefon no']))
-    return 'WhatsApp: <strong>0533 259 50 42</strong><br>Mail: cnrtech@outlook.com.tr<br>Konya merkezli çalışıyoruz.';
+    return WP + ' üzerinden yazabilirsin.<br>Mail: cnrtech@outlook.com.tr<br>Konya merkezli çalışıyoruz.';
 
   if(has(t, ['nerede','adres','konya','konum','magaza','dukkan']))
-    return 'Konya merkezliyiz. Alım-satım ve servis için en hızlı yol WhatsApp: <strong>0533 259 50 42</strong>';
+    return 'Konya merkezliyiz. Alım-satım ve servis için en hızlı yol ' + WP + '.';
 
   if(has(t, ['stress test','olu piksel','dead pixel','test araci','benchmark site']))
     return 'Sitede ücretsiz araçlar var:<br>• Ana sayfa → CPU / GPU stress + ölü piksel<br>• <a href="telefon.html" style="color:#00b4ff">Telefon testleri</a> (dokunmatik, kamera, ses, sensör)<br>İstersen şimdi dene.';
@@ -266,8 +267,8 @@ function answer(q){
       `• PSU önerisi: ~${gpu.psu}W+ (kaliteli marka)<br>`+
       `• Not: ${gpu.note}`;
     if(wantPsu) out += `<br><br>Bu kart için <strong>${gpu.psu}W</strong> altı riskli, özellikle K modeli CPU varsa +50-100W bırak.`;
-    if(wantSell) out += `<br><br>Satış düşünüyorsan güncel piyasa için WhatsApp’tan yaz, bakarız: 0533 259 50 42`;
-    if(wantBuy) out += `<br><br>Alım için stok/fiyat güncelini WhatsApp’tan sorabilirsin.`;
+    if(wantSell) out += `<br><br>Satış düşünüyorsan güncel piyasa için ${WP} üzerinden yaz.`;
+    if(wantBuy) out += `<br><br>Alım için stok/fiyat güncelini ${WP} üzerinden sorabilirsin.`;
     if(wantTemp) out += `<br><br>Isınma: yükte 70-83°C normal. 90+ sürekli ise macun, kasa akışı veya fan eğrisi kontrol edilmeli.`;
     if(res4k && gpu.tier !== 'flagship' && gpu.tier !== 'üst') out += `<br><br>⚠️ 4K için bu kart zorlanabilir. 1440p daha mantıklı.`;
     if(res1440 && gpu.tier === 'giriş') out += `<br><br>⚠️ 1440p’de ayar düşürmen gerekebilir.`;
@@ -304,7 +305,7 @@ function answer(q){
 
   if(wantMaint){
     lastTopic = 'bakim';
-    return 'Bakım paketi genelde:<br>• Komple toz temizliği<br>• CPU (gerekirse GPU) termal macun<br>• Fan kontrolü / termal pad kontrolü<br>• İstenirse format<br><br>Isı 80-85°C üstüne sık çıkıyorsa zamanı gelmiş demektir. Randevu: WhatsApp <strong>0533 259 50 42</strong>';
+    return 'Bakım paketi genelde:<br>• Komple toz temizliği<br>• CPU (gerekirse GPU) termal macun<br>• Fan kontrolü / termal pad kontrolü<br>• İstenirse format<br><br>Isı 80-85°C üstüne sık çıkıyorsa zamanı gelmiş demektir. Randevu: ' + WP;
   }
 
   if(wantTemp){
@@ -330,10 +331,10 @@ function answer(q){
     return 'Anakart = işlemci soketi + RAM tipi.<br>• AM4 → B550<br>• AM5 → B650 / B850<br>• Intel 12-14 → B760 / Z790<br><br>İşlemcini yaz, doğru chipset’i net söyleyeyim.';
 
   if(has(t, ['fiyat','ne kadar','ucret','kaç para','kac para','tl']))
-    return 'Fiyatlar güne ve ürüne göre değişiyor. Net rakam için model + durum (sıfır/ikinci el) yaz, ya da direkt WhatsApp: <strong>0533 259 50 42</strong>';
+    return 'Fiyatlar güne ve ürüne göre değişiyor. Net rakam için model + durum (sıfır/ikinci el) yaz, ya da ' + WP + ' üzerinden sor.';
 
   if(wantSell)
-    return 'Satmak istediğin parçanın modelini, yaşını ve durumunu yaz. Ya da foto/detay için WhatsApp: <strong>0533 259 50 42</strong> — hızlı dönüş yapıyoruz.';
+    return 'Satmak istediğin parçanın modelini, yaşını ve durumunu yaz. Ya da foto/detay için ' + WP + ' — hızlı dönüş yapıyoruz.';
 
   if(wantBuy && !gpu && !cpu)
     return 'Ne almak istiyorsun? (GPU / işlemci / full sistem / aksesuar)<br>Bütçe ve kullanım amacını da eklersen direkt yönlendireyim.';
@@ -344,7 +345,7 @@ function answer(q){
   if(t.length < 12)
     return 'Biraz daha açar mısın? Model adı veya neyi merak ettiğini yaz (ör: "4060 5600x ile uyumlu mu").';
 
-  return 'Konuyu anladım ama net cevap için şu detaylar lazım:<br><br>• Parça modeli (örn: RTX 4070, Ryzen 5 5600)<br>• Ne soruyorsun: uyum / fiyat / ısınma / öneri / satış<br><br>Tek cümlede yazman yeterli. Acilse WhatsApp: <strong>0533 259 50 42</strong>';
+  return 'Konuyu anladım ama net cevap için şu detaylar lazım:<br><br>• Parça modeli (örn: RTX 4070, Ryzen 5 5600)<br>• Ne soruyorsun: uyum / fiyat / ısınma / öneri / satış<br><br>Tek cümlede yazman yeterli. Acilse ' + WP + '.';
 }
 
 function ask(){
