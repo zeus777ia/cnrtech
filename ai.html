@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNR AI | Günlük 5 Soru</title>
+<meta name="description" content="CNR Tech AI asistanı - Günlük 5 ücretsiz soru hakkı. PC, GPU, bakım ve teknik destek.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#05080f;color:#eee;min-height:100vh;background-image:radial-gradient(ellipse at 20% 10%,rgba(0,180,255,.08) 0%,transparent 50%),linear-gradient(180deg,#05080f,#0a0f1a)}
+.container{max-width:640px;margin:0 auto;padding:0 16px}
+header{padding:28px 0 18px;text-align:center;border-bottom:1px solid rgba(0,180,255,.12)}
+header a{color:#7dd3ff;text-decoration:none;font-size:.9rem}
+header h1{font-size:1.5rem;margin:10px 0 4px;color:#fff}
+header p{color:#7a9bb8;font-size:.9rem}
+.info-bar{display:flex;justify-content:space-between;gap:10px;margin:18px 0;flex-wrap:wrap}
+.info-chip{background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.25);border-radius:10px;padding:10px 14px;font-size:.85rem;color:#9bb4c9;flex:1;min-width:140px;text-align:center}
+.info-chip strong{display:block;color:#00b4ff;font-size:1.1rem;margin-top:2px}
+.chat{background:rgba(10,18,30,.9);border:1px solid rgba(0,180,255,.18);border-radius:16px;padding:16px;min-height:320px;max-height:52vh;overflow-y:auto;margin-bottom:14px}
+.msg{margin:12px 0;max-width:90%}
+.msg.user{margin-left:auto;text-align:right}
+.msg .bubble{display:inline-block;padding:10px 14px;border-radius:14px;font-size:.95rem;line-height:1.45;text-align:left}
+.msg.user .bubble{background:#00b4ff;color:#000;border-bottom-right-radius:4px}
+.msg.bot .bubble{background:rgba(0,40,70,.8);border:1px solid rgba(0,180,255,.2);color:#e0eef8;border-bottom-left-radius:4px}
+.msg .meta{font-size:.72rem;color:#5a7a90;margin-top:4px}
+.input-row{display:flex;gap:8px}
+.input-row input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid rgba(0,180,255,.3);background:#0a1220;color:#fff;font-size:1rem;outline:none}
+.input-row input:focus{border-color:#00b4ff}
+.input-row button{padding:14px 18px;border:none;border-radius:12px;background:#00b4ff;color:#000;font-weight:700;font-size:.95rem;cursor:pointer;white-space:nowrap}
+.input-row button:disabled{opacity:.4;cursor:not-allowed}
+.hint{text-align:center;color:#5a7a90;font-size:.8rem;margin:12px 0 30px}
+.blocked{text-align:center;padding:30px 16px;color:#9bb4c9}
+.blocked h2{color:#ff6b4a;margin-bottom:8px}
+footer{text-align:center;padding:20px 0 40px;color:#4a5a6a;font-size:.8rem}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<a href="index.html">← Ana Sayfa</a>
+<h1>🤖 CNR AI</h1>
+<p>Günlük 5 ücretsiz soru • PC & Teknik Destek</p>
+</div>
+</header>
+
+<div class="container">
+<div class="info-bar">
+<div class="info-chip">Kalan Hak<br><strong id="hak">—</strong></div>
+<div class="info-chip">IP Adresin<br><strong id="ipShow">Algılanıyor...</strong></div>
+<div class="info-chip">Tarih<br><strong id="tarih">—</strong></div>
+</div>
+
+<div class="chat" id="chat">
+<div class="msg bot">
+<div class="bubble">Merhaba! Ben CNR AI. PC parça, GPU, bakım, sistem toplama ve teknik konularda yardımcı olurum.<br><br>Bugün <strong>5 soru</strong> hakkın var. Sorunu yaz.</div>
+<div class="meta">CNR AI</div>
+</div>
+</div>
+
+<div class="input-row" id="inputRow">
+<input type="text" id="qInput" placeholder="Sorunu yaz..." maxlength="300" autocomplete="off">
+<button id="sendBtn" onclick="ask()">Gönder</button>
+</div>
+
+<div class="blocked" id="blocked" style="display:none">
+<h2>Hakların bitti</h2>
+<p>Bugünkü 5 soru hakkını kullandın.<br>Yarın tekrar deneyebilirsin.</p>
+</div>
+
+<p class="hint">IP + gün bazlı limit. Aynı ağdaki farklı cihazlar ayrı sayılır (tarayıcı depolama).</p>
+</div>
+
+<footer>CNR Tech • cnrtech.com.tr</footer>
+
+<script>
+const MAX = 5;
+let userIP = 'unknown';
+let remaining = MAX;
+
+function todayKey(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function storageKey(){
+  return 'cnr_ai_' + userIP + '_' + todayKey();
+}
+function loadUsage(){
+  const used = parseInt(localStorage.getItem(storageKey()) || '0', 10);
+  remaining = Math.max(0, MAX - used);
+  document.getElementById('hak').textContent = remaining + ' / ' + MAX;
+  document.getElementById('tarih').textContent = todayKey();
+  if(remaining <= 0){
+    document.getElementById('inputRow').style.display = 'none';
+    document.getElementById('blocked').style.display = 'block';
+  }
+}
+function saveUse(){
+  const used = MAX - remaining + 1;
+  localStorage.setItem(storageKey(), String(used));
+  remaining = Math.max(0, MAX - used);
+  document.getElementById('hak').textContent = remaining + ' / ' + MAX;
+  if(remaining <= 0){
+    document.getElementById('inputRow').style.display = 'none';
+    document.getElementById('blocked').style.display = 'block';
+  }
+}
+
+// IP algıla
+fetch('https://api.ipify.org?format=json')
+  .then(r => r.json())
+  .then(d => {
+    userIP = d.ip || 'unknown';
+    document.getElementById('ipShow').textContent = userIP;
+    loadUsage();
+  })
+  .catch(() => {
+    userIP = 'local-' + (localStorage.getItem('cnr_fid') || Math.random().toString(36).slice(2,10));
+    if(!localStorage.getItem('cnr_fid')) localStorage.setItem('cnr_fid', userIP.replace('local-',''));
+    document.getElementById('ipShow').textContent = 'Yerel';
+    loadUsage();
+  });
+
+function addMsg(text, who){
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'msg ' + who;
+  div.innerHTML = '<div class="bubble">' + text + '</div><div class="meta">' + (who==='user'?'Sen':'CNR AI') + '</div>';
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// Basit ama işe yarar cevap motoru (PC/teknik odaklı)
+function answer(q){
+  const t = q.toLowerCase()
+    .replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u')
+    .replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c');
+
+  if(/merhaba|selam|hey|sa\b/.test(t))
+    return 'Merhaba! PC, GPU, bakım veya sistem hakkında sorunu sorabilirsin.';
+
+  if(/gpu|ekran kart|rtx|rx\s*\d|4060|4070|4080|4090|7800|7900/.test(t))
+    return 'GPU konusunda yardımcı olurum. Alım-satım, sıcaklık, sürücü, bottleneck veya performans sorunu mu var? Modelini yazarsan daha net cevap veririm. RTX 40/50 ve RX serisiyle çalışıyoruz.';
+
+  if(/islemci|cpu|ryzen|intel|i5|i7|i9|5600|5700|7500|7600|7700|9600/.test(t))
+    return 'İşlemci tarafında Ryzen ve Intel modelleriyle ilgileniyoruz. Oyun / iş / yayın için mi bakıyorsun? Bütçeni ve kullanım amacını yaz, yönlendireyim.';
+
+  if(/ram|bellek|ddr4|ddr5|32gb|16gb/.test(t))
+    return 'RAM için oyun ve genel kullanımda 32GB artık ideal. DDR4 mü DDR5 mi sistemin? Anakart ve işlemci nesline göre öneri değişir.';
+
+  if(/psu|power|guc kaynag|kaç watt|watt/.test(t))
+    return 'PSU seçerken GPU + CPU TDP toplamına %30-40 pay bırak. 750W kaliteli (80+ Bronze/Gold) çoğu orta-üst sistem için yeterli. Marka/model yazarsan netleştiririm.';
+
+  if(/bakim|temizlik|termal|macun|pasta|toz/.test(t))
+    return 'Bakımda: toz temizliği + kaliteli termal macun + gerekirse termal pad. Yılda 1 kez ideal. Isı 80°C üstüne sık çıkıyorsa bakım zamanı gelmiş demektir. Randevu için WhatsApp yazabilirsin.';
+
+  if(/format|windows|sifirlama|temiz kurulum/.test(t))
+    return 'Format / temiz kurulum yapıyoruz. Önemli dosyalarını yedekle, lisans anahtarlarını not al. SSD ise kurulum hızlı biter. İstersen servise bırakabilirsin.';
+
+  if(/sicaklik|isinma|fan|throttle|thermal/.test(t))
+    return 'CPU genelde 70-85°C, GPU 70-83°C altı yükte normal sayılır. Sürekli 90+ görüyorsan macun, kasa hava akışı veya fan eğrisi kontrol edilmeli. Stress test araçlarımız ana sayfada var.';
+
+  if(/fiyat|ne kadar|ucret|kaç para|tl/.test(t))
+    return 'Fiyatlar ürüne ve güncel piyasaya göre değişir. GPU, sistem veya bakım için net fiyat istersen WhatsApp’tan yaz: 0533 259 50 42';
+
+  if(/nerede|adres|konya|konum|magaza/.test(t))
+    return 'Konya merkezli çalışıyoruz. Alım-satım ve teknik servis için WhatsApp üzerinden ulaşman en hızlısı: 0533 259 50 42';
+
+  if(/whatsapp|iletisim|ulas|numara/.test(t))
+    return 'WhatsApp: 0533 259 50 42<br>E-posta: cnrtech@outlook.com.tr';
+
+  if(/stress|test|benchmark|ölü piksel|piksel/.test(t))
+    return 'Sitemizde ücretsiz test araçları var:<br>• PC: CPU/GPU stress + ölü piksel<br>• Telefon: dokunmatik, kamera, ses, sensör<br>Ana sayfadaki Test Araçları bölümünden girebilirsin.';
+
+  if(/sistem|toplama|kasa|hazir pc|gaming pc/.test(t))
+    return 'Toplama sistem yapıyoruz. Bütçe + kullanım (oyun 1080p/1440p, yayın, ofis) yaz, ona göre parça listesi çıkarayım. İkinci el + sıfır karışık da toparlanabilir.';
+
+  if(/anakart|motherboard|b550|b650|b760/.test(t))
+    return 'Anakart işlemci soketine ve RAM tipine (DDR4/DDR5) göre seçilmeli. B550/B650 AMD, B760 Intel tarafında popüler. Hangi işlemciyi kullanıyorsun?';
+
+  if(/ssd|nvme|hdd|depolama/.test(t))
+    return 'Oyun ve sistem diski için NVMe SSD şart. 1TB genelde ideal başlangıç. HDD sadece arşiv için mantıklı. Marka/model sorarsan bakarım.';
+
+  if(/tesekkur|sağol|sagol|eyw|eyvallah/.test(t))
+    return 'Rica ederim! Başka sorun olursa yaz. İyi oyunlar / iyi çalışmalar.';
+
+  // genel
+  return 'Anladım. Bu konuda net cevap için biraz daha detay lazım.<br><br>• Parça / model adı<br>• Sorunun ne olduğu (alınır mı, ısınma, uyum, fiyat…)<br><br>Yazarsan daha net yönlendireyim. Acil ise WhatsApp: 0533 259 50 42';
+}
+
+function ask(){
+  const input = document.getElementById('qInput');
+  const q = input.value.trim();
+  if(!q) return;
+  if(remaining <= 0) return;
+
+  addMsg(q.replace(/</g,'<'), 'user');
+  input.value = '';
+  saveUse();
+
+  // küçük gecikme ile “düşünüyor” hissi
+  setTimeout(() => {
+    addMsg(answer(q), 'bot');
+  }, 400 + Math.random()*500);
+}
+
+document.getElementById('qInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') ask();
+});
+</script>
+</body>
+</html>
