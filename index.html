@@ -40,8 +40,10 @@ header.scrolled{background:rgba(6,10,20,.96);box-shadow:0 8px 28px rgba(0,0,0,.4
 .btn-secondary{background:transparent;border:1.5px solid rgba(0,229,255,.4);color:var(--cyan)}
 .btn-secondary:hover{background:rgba(0,229,255,.1)}
 .btn-fiyat{background:linear-gradient(135deg,#e8a05a,#d4894a);color:#1a1008;box-shadow:0 4px 24px rgba(232,160,90,.35)}
-.btn-fiyat:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,160,90,.5)}
+.btn-fiyat:hover{transform:translateY(-2px)}
 .btn-amber{background:linear-gradient(135deg,#e8a05a,#d4894a);color:#1a1008;box-shadow:0 4px 24px rgba(232,160,90,.3)}
+.btn-ads{background:linear-gradient(135deg,#7c5cff,#5b8def);color:#fff;box-shadow:0 4px 24px rgba(124,92,255,.35)}
+.btn-ads:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,92,255,.5)}
 .section-title{text-align:center;font-weight:800}
 .section-title span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(10px);transition:all .3s}
@@ -59,11 +61,42 @@ header.scrolled{background:rgba(6,10,20,.96);box-shadow:0 8px 28px rgba(0,0,0,.4
 .mumira-box .card h3{color:#e8c39e}.mumira-box .card p{color:#a89078}
 .contact{background:var(--card);border-radius:20px;text-align:center;border:1px solid var(--border);position:relative;overflow:hidden}
 .contact::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--amber))}
-.email{color:var(--muted)}
-.contact-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.email{color:var(--muted)}.contact-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 footer{text-align:center;color:#4a5a72;border-top:1px solid rgba(0,229,255,.1)}
 footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-height:2}
 .m-bottom-nav{display:none}
+
+/* ===== REKLAM RAYLARI ===== */
+.ad-rail{
+  display:none;position:fixed;top:50%;transform:translateY(-50%);
+  width:150px;z-index:50;flex-direction:column;gap:12px;
+}
+.ad-rail-left{left:10px}.ad-rail-right{right:10px}
+.ad-slot{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  min-height:280px;padding:16px 12px;text-align:center;text-decoration:none;
+  background:linear-gradient(165deg,rgba(12,22,42,.95),rgba(20,16,40,.92));
+  border:1px dashed rgba(0,229,255,.35);border-radius:16px;
+  color:var(--muted);transition:all .25s;backdrop-filter:blur(10px);
+}
+.ad-slot:hover{
+  border-style:solid;border-color:rgba(124,92,255,.55);
+  box-shadow:0 0 28px rgba(124,92,255,.2);transform:translateY(-3px);color:#dff6ff;
+}
+.ad-slot .ad-ico{font-size:1.6rem;line-height:1}
+.ad-slot .ad-title{font-size:.78rem;font-weight:700;color:var(--cyan);letter-spacing:.02em}
+.ad-slot .ad-text{font-size:.7rem;line-height:1.4;color:#7a90aa}
+.ad-slot .ad-cta{
+  margin-top:6px;font-size:.72rem;font-weight:700;color:#041018;
+  background:linear-gradient(135deg,#7c5cff,#5b8def);padding:7px 10px;border-radius:999px;
+}
+.ad-mobile{
+  display:none;margin:20px 16px 0;padding:16px;
+  background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(0,229,255,.08));
+  border:1px dashed rgba(124,92,255,.4);border-radius:16px;text-align:center;
+}
+.ad-mobile p{color:var(--muted);font-size:.88rem;margin-bottom:12px}
+
 #cookieBar{display:none;position:fixed;left:0;right:0;z-index:10001;background:rgba(8,14,28,.97);border-top:1px solid rgba(0,229,255,.3);backdrop-filter:blur(12px);box-shadow:0 -8px 32px rgba(0,0,0,.4)}
 #cookieBar .inner{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between}
 #cookieBar p{flex:1;min-width:180px;color:#b8cce0;margin:0;line-height:1.45}
@@ -80,6 +113,11 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
 .stats-box .val{font-size:1.3rem;font-weight:800}.stats-box .label{font-size:.75rem;color:#8899aa}
 .temp-hot{color:#ff7a5c}.power{color:#ffd166}
+
+@media (min-width:1280px){
+  .ad-rail{display:flex}
+  .container{max-width:1000px}
+}
 @media (min-width:901px){
   .container{max-width:1100px;padding:0 28px}.top-banner{font-size:.9rem;padding:11px 20px}
   header .header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0;min-height:76px}
@@ -87,7 +125,7 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
   .logo-text .brand{font-size:1.3rem}.logo-text .tagline{font-size:.8rem;margin-top:2px}
   .desktop-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
   .desktop-nav .nav-link{padding:9px 14px;border-radius:999px;font-size:.86rem}
-  .visitor-chip{padding:7px 14px;margin:0}.m-only{display:none!important}
+  .visitor-chip{padding:7px 14px;margin:0}
   .hero{padding:72px 0 56px;text-align:center}
   .hero h1{font-size:2.2rem;margin-bottom:16px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .hero p{font-size:1.1rem;max-width:560px;margin:0 auto 30px;color:var(--muted)}
@@ -101,33 +139,52 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
 }
 @media (max-width:900px){
   body{padding-bottom:calc(72px + var(--safe-b))}.container{padding:0 16px;max-width:100%}
+  .ad-rail{display:none!important}.ad-mobile{display:block}
   .top-banner{font-size:.72rem;padding:8px 12px;line-height:1.4}
   header .header-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:10px}
   .logo-wrap{display:flex;align-items:center;gap:10px}.logo-img{width:44px;height:44px;border-radius:11px}
   .logo-text .brand{font-size:1.05rem}.logo-text .tagline{display:none}.desktop-nav{display:none!important}
   .visitor-chip{padding:5px 10px;font-size:.72rem}.visitor-chip .label-full{display:none}
   .m-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(6,10,20,.96);backdrop-filter:blur(18px);border-top:1px solid rgba(0,229,255,.25);padding:8px 6px calc(8px + var(--safe-b));justify-content:space-around;align-items:center;gap:2px}
-  .m-bottom-nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-size:.65rem;font-weight:600;padding:6px 2px;border-radius:12px;transition:all .2s}
+  .m-bottom-nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-size:.65rem;font-weight:600;padding:6px 2px;border-radius:12px}
   .m-bottom-nav a .ico{font-size:1.2rem;line-height:1}.m-bottom-nav a:active,.m-bottom-nav a:hover{color:var(--cyan);background:rgba(0,229,255,.1)}
   .m-bottom-nav a.fiyat{color:#f0c878}.m-bottom-nav a.wa{color:#25D366}
   .hero{padding:36px 0 28px;text-align:center}
   .hero h1{font-size:1.4rem;margin-bottom:12px;font-weight:800;line-height:1.25;background:linear-gradient(135deg,#fff 0%,var(--cyan) 55%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .hero p{font-size:.95rem;color:var(--muted);margin:0 auto 22px;max-width:100%;padding:0 4px}
-  .hero-btns{display:flex;flex-direction:column;gap:10px;width:100%}.hero-btns .btn{width:100%;padding:15px 20px;font-size:.98rem;margin:0}
+  .hero p{font-size:.95rem;color:var(--muted);margin:0 auto 22px}.hero-btns{display:flex;flex-direction:column;gap:10px;width:100%}.hero-btns .btn{width:100%;padding:15px 20px;font-size:.98rem;margin:0}
   .section-title{font-size:1.25rem;margin:36px 0 16px}
-  .cards{display:grid;grid-template-columns:1fr;gap:12px}.card{padding:18px 16px;border-radius:14px}.card:hover{transform:none}.card h3{font-size:1rem;margin-bottom:6px}.card p{font-size:.88rem}
-  .cards.services{grid-template-columns:1fr 1fr;gap:10px}.cards.services .card{padding:14px 12px}.cards.services .card h3{font-size:.92rem}.cards.services .card p{font-size:.78rem;line-height:1.4}
-  .tools-section{margin:36px 0 20px;padding:20px 14px;border-radius:16px}.tools-grid{display:flex;flex-direction:column;gap:10px}.tool-btn{padding:15px 12px;font-size:.92rem;min-height:48px}.disclaimer{font-size:.75rem;margin-top:12px;padding:0 4px}
+  .cards{display:grid;grid-template-columns:1fr;gap:12px}.card{padding:18px 16px;border-radius:14px}.card:hover{transform:none}
+  .cards.services{grid-template-columns:1fr 1fr;gap:10px}.cards.services .card{padding:14px 12px}.cards.services .card h3{font-size:.92rem}.cards.services .card p{font-size:.78rem}
+  .tools-section{margin:36px 0 20px;padding:20px 14px;border-radius:16px}.tools-grid{display:flex;flex-direction:column;gap:10px}.tool-btn{padding:15px 12px;font-size:.92rem;min-height:48px}
   .mumira-box{margin-top:40px;padding:28px 14px 24px;border-radius:18px}.mumira-box .cards{grid-template-columns:1fr;gap:10px}.btn-amber{width:100%;margin-top:16px;padding:14px 20px}
   .contact{padding:32px 18px;margin:36px 0 24px;border-radius:16px}.contact h2{font-size:1.2rem}.email{margin:10px 0 18px;font-size:.9rem;word-break:break-all}.contact-btns{flex-direction:column}.contact-btns .btn{width:100%}
-  footer{padding:24px 0 calc(20px + var(--safe-b));font-size:.8rem}.legal-links{font-size:.78rem;margin:10px 0}
-  #cookieBar{bottom:calc(64px + var(--safe-b));padding:12px 14px}#cookieBar p{font-size:.8rem}#cookieBar button{padding:10px 14px;font-size:.8rem;min-height:44px}
+  footer{padding:24px 0 calc(20px + var(--safe-b));font-size:.8rem}
+  #cookieBar{bottom:calc(64px + var(--safe-b));padding:12px 14px}
   .stats-box{min-width:0;width:calc(100vw - 40px);max-width:320px}
 }
-@media (max-width:380px){.cards.services{grid-template-columns:1fr}.hero h1{font-size:1.25rem}.logo-text .brand{font-size:.95rem}}
+@media (max-width:380px){.cards.services{grid-template-columns:1fr}.hero h1{font-size:1.25rem}}
 </style>
 </head>
 <body>
+
+<!-- Sol / sağ reklam rayları (masaüstü geniş ekran) -->
+<aside class="ad-rail ad-rail-left" aria-label="Reklam alanı sol">
+  <a class="ad-slot" href="mailto:cnrtech@outlook.com.tr?subject=Reklam%20ve%20%C4%B0%C5%9F%20Birli%C4%9Fi%20-%20CNR%20Tech&body=Merhaba%2C%0A%0AReklam%20/%20i%C5%9F%20birli%C4%9Fi%20hakk%C4%B1nda%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum.%0A%0AMarka%20/%20firma%3A%0ATeklif%20%C3%B6zeti%3A%0A">
+    <span class="ad-ico">📢</span>
+    <span class="ad-title">REKLAM ALANI</span>
+    <span class="ad-text">Sol banner<br>160×600</span>
+    <span class="ad-cta">Yer tut → Mail</span>
+  </a>
+</aside>
+<aside class="ad-rail ad-rail-right" aria-label="Reklam alanı sağ">
+  <a class="ad-slot" href="mailto:cnrtech@outlook.com.tr?subject=Reklam%20ve%20%C4%B0%C5%9F%20Birli%C4%9Fi%20-%20CNR%20Tech&body=Merhaba%2C%0A%0AReklam%20/%20i%C5%9F%20birli%C4%9Fi%20hakk%C4%B1nda%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum.%0A%0AMarka%20/%20firma%3A%0ATeklif%20%C3%B6zeti%3A%0A">
+    <span class="ad-ico">🤝</span>
+    <span class="ad-title">İŞ BİRLİĞİ</span>
+    <span class="ad-text">Sağ banner<br>sponsorluk</span>
+    <span class="ad-cta">Teklif gönder</span>
+  </a>
+</aside>
+
 <div class="top-banner"><strong>AI destek · AI destekli uygulamalar · Site yönetimi · Tasarım & kodlama</strong> — hepsi tek çatı altında</div>
 <header id="mainHeader">
 <div class="container header-inner">
@@ -147,6 +204,13 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
   </div>
 </div>
 </header>
+
+<!-- Mobil reklam / iş birliği bandı -->
+<div class="ad-mobile">
+  <p>📢 Reklam veya iş birliği için bize yazın</p>
+  <a class="btn btn-ads" href="mailto:cnrtech@outlook.com.tr?subject=Reklam%20ve%20%C4%B0%C5%9F%20Birli%C4%9Fi%20-%20CNR%20Tech&body=Merhaba%2C%0A%0AReklam%20/%20i%C5%9F%20birli%C4%9Fi%20hakk%C4%B1nda%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum.%0A">✉️ Reklam & İş Birliği</a>
+</div>
+
 <section class="hero"><div class="container">
   <h1>GPU · PC Parça · Aksesuar · Bakım</h1>
   <p>Konya merkezli al-sat ve teknik servis. Temiz ürün, dürüst fiyat. Ücretsiz test araçları ve AI asistan hazır.</p>
@@ -156,6 +220,7 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
     <a href="ai.html" class="btn btn-secondary">🤖 CNR AI</a>
   </div>
 </div></section>
+
 <section class="container">
   <div class="section-title">PC <span>Hizmetleri</span></div>
   <div class="cards services">
@@ -165,6 +230,7 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
     <div class="card"><h3>🔧 Bakım & Onarım</h3><p>Temizlik, termal macun, format, arıza tespiti ve onarım.</p></div>
   </div>
 </section>
+
 <section class="container" id="araclar">
   <div class="tools-section">
     <div class="section-title" style="margin-top:0">Test <span>Araçları</span></div>
@@ -180,6 +246,7 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
     <p class="disclaimer">Uyarı: Stress testleri cihazı yorabilir. Sıcaklık/güç değerleri tahmindir. <a href="kullanim.html">Kullanım koşulları</a></p>
   </div>
 </section>
+
 <section class="container" id="mumira">
   <div class="mumira-box">
     <div class="section-title">Mumira <span>El Yapımı Mumlar</span></div>
@@ -191,22 +258,26 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
     <a href="https://www.shopier.com/mumiraonline" class="btn btn-amber" target="_blank" rel="noopener">🛒 Shopier'de İncele / Satın Al</a>
   </div>
 </section>
+
 <section class="container" id="iletisim">
   <div class="contact">
     <h2>İletişime Geç</h2>
-    <p style="color:var(--muted);margin-bottom:6px;font-size:.95rem">PC parça, bakım, test veya mum için yazman yeterli.</p>
+    <p style="color:var(--muted);margin-bottom:6px;font-size:.95rem">PC parça, bakım, test, mum veya reklam / iş birliği.</p>
     <div class="email">cnrtech@outlook.com.tr</div>
     <div class="contact-btns">
       <a href="fiyat.html" class="btn btn-fiyat">💰 Fiyat Al</a>
+      <a class="btn btn-ads" href="mailto:cnrtech@outlook.com.tr?subject=Reklam%20ve%20%C4%B0%C5%9F%20Birli%C4%9Fi%20-%20CNR%20Tech&body=Merhaba%2C%0A%0AReklam%20/%20i%C5%9F%20birli%C4%9Fi%20hakk%C4%B1nda%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum.%0A%0AMarka%20/%20firma%3A%0ATeklif%20%C3%B6zeti%3A%0A">✉️ Reklam & İş Birliği</a>
       <a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">WhatsApp</a>
     </div>
   </div>
 </section>
+
 <footer><div class="container">
   © 2026 CNR Tech & Mumira · Konya<br>cnrtech.com.tr
   <div class="legal-links"><a href="gizlilik.html">Gizlilik</a> · <a href="kvkk.html">KVKK</a> · <a href="cerez.html">Çerezler</a> · <a href="kullanim.html">Kullanım</a></div>
   <span style="font-size:.72rem;color:#3d4d60">Test ve AI çıktıları bilgilendirme amaçlıdır.</span>
 </div></footer>
+
 <nav class="m-bottom-nav" aria-label="Mobil menü">
   <a href="index.html"><span class="ico">🏠</span>Ana</a>
   <a href="fiyat.html" class="fiyat"><span class="ico">💰</span>Fiyat</a>
@@ -214,13 +285,16 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-h
   <a href="#araclar"><span class="ico">🛠️</span>Test</a>
   <a href="https://wa.me/905332595042" class="wa" target="_blank" rel="noopener"><span class="ico">💬</span>WP</a>
 </nav>
+
 <div id="cookieBar" role="dialog" aria-label="Çerez onayı"><div class="inner">
   <p>Site; AI limiti için tarayıcı depolaması ve IP kullanabilir. <a href="cerez.html">Çerezler</a> · <a href="kvkk.html">KVKK</a></p>
   <div class="actions"><button type="button" class="reject" onclick="cookieChoice('reject')">Zorunlu</button><button type="button" class="accept" onclick="cookieChoice('accept')">Kabul et</button></div>
 </div></div>
+
 <div id="deadPixelOverlay" onclick="nextDeadColor()"><div style="position:absolute;top:20px;left:0;right:0;text-align:center;font-size:.9rem;opacity:.7">Tıkla → sonraki renk · ESC çık</div></div>
 <div id="cpuOverlay"><div class="stats-box"><h2>⚡ CPU Stress Test</h2><div class="stats-grid"><div><div class="val" id="cpuTime">0 sn</div><div class="label">Süre</div></div><div><div class="val" id="cpuOps">0</div><div class="label">İşlem/sn</div></div><div><div class="val" id="cpuScore">0</div><div class="label">Skor</div></div><div><div class="val temp-hot" id="cpuTemp">42°C</div><div class="label">Sıcaklık</div></div><div><div class="val power" id="cpuPower">38W</div><div class="label">Güç</div></div></div></div><div class="test-controls"><button onclick="stopCpuTest()">Durdur</button></div></div>
 <div id="gpuOverlay"><canvas id="gpuCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:relative;z-index:2"><div class="stats-box"><h2>🎮 GPU Stress Test</h2><div class="stats-grid"><div><div class="val" id="gpuTime">0 sn</div><div class="label">Süre</div></div><div><div class="val" id="gpuFps">0</div><div class="label">FPS</div></div><div><div class="val" id="gpuParticles">900</div><div class="label">Parçacık</div></div><div><div class="val temp-hot" id="gpuTemp">48°C</div><div class="label">Sıcaklık</div></div><div><div class="val power" id="gpuPower">68W</div><div class="label">Güç</div></div></div></div><div class="test-controls" style="position:relative;transform:none;left:0;margin-top:16px"><button onclick="stopGpuTest()">Durdur</button></div></div></div>
+
 <script>
 (function(){const k='cnr_cookie_ok';if(!localStorage.getItem(k))document.getElementById('cookieBar').style.display='block';window.cookieChoice=function(v){localStorage.setItem(k,v);document.getElementById('cookieBar').style.display='none'}})();
 (function(){const el=document.getElementById('visitorCount');if(!el)return;function todayTR(){return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'})}const day=todayTR(),flagKey='cnr_visit_'+day,localKey='cnr_visit_count_'+day,already=localStorage.getItem(flagKey);function show(n){el.textContent=Number(n).toLocaleString('tr-TR')}function localBump(){let n=parseInt(localStorage.getItem(localKey)||'0',10);if(!already){n+=1;localStorage.setItem(localKey,String(n));localStorage.setItem(flagKey,'1')}show(n||1)}const shouldUp=!already;const url=shouldUp?'https://api.counterapi.dev/v1/cnrtech/daily-'+day+'/up':'https://api.counterapi.dev/v1/cnrtech/daily-'+day+'/';fetch(url,{method:'GET',mode:'cors'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{const n=(d&&(d.count??d.value))||0;if(shouldUp)localStorage.setItem(flagKey,'1');show(n);localStorage.setItem(localKey,String(n))}).catch(localBump)})();
