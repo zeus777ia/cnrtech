@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CNR AI | Günlük 5 Soru</title>
-<meta name="description" content="CNR Tech AI asistanı - Günlük 5 ücretsiz soru hakkı. PC, GPU, bakım ve teknik destek.">
+<meta name="description" content="CNR Tech AI asistanı - Günlük 5 ücretsiz soru. PC, GPU, bakım ve teknik destek.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#05080f;color:#eee;min-height:100vh;background-image:radial-gradient(ellipse at 20% 10%,rgba(0,180,255,.08) 0%,transparent 50%),linear-gradient(180deg,#05080f,#0a0f1a)}
@@ -14,15 +14,16 @@ header a{color:#7dd3ff;text-decoration:none;font-size:.9rem}
 header h1{font-size:1.5rem;margin:10px 0 4px;color:#fff}
 header p{color:#7a9bb8;font-size:.9rem}
 .info-bar{display:flex;justify-content:space-between;gap:10px;margin:18px 0;flex-wrap:wrap}
-.info-chip{background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.25);border-radius:10px;padding:10px 14px;font-size:.85rem;color:#9bb4c9;flex:1;min-width:140px;text-align:center}
+.info-chip{background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.25);border-radius:10px;padding:10px 14px;font-size:.85rem;color:#9bb4c9;flex:1;min-width:130px;text-align:center}
 .info-chip strong{display:block;color:#00b4ff;font-size:1.1rem;margin-top:2px}
 .chat{background:rgba(10,18,30,.9);border:1px solid rgba(0,180,255,.18);border-radius:16px;padding:16px;min-height:320px;max-height:52vh;overflow-y:auto;margin-bottom:14px}
-.msg{margin:12px 0;max-width:90%}
+.msg{margin:12px 0;max-width:92%}
 .msg.user{margin-left:auto;text-align:right}
-.msg .bubble{display:inline-block;padding:10px 14px;border-radius:14px;font-size:.95rem;line-height:1.45;text-align:left}
+.msg .bubble{display:inline-block;padding:10px 14px;border-radius:14px;font-size:.95rem;line-height:1.5;text-align:left}
 .msg.user .bubble{background:#00b4ff;color:#000;border-bottom-right-radius:4px}
-.msg.bot .bubble{background:rgba(0,40,70,.8);border:1px solid rgba(0,180,255,.2);color:#e0eef8;border-bottom-left-radius:4px}
+.msg.bot .bubble{background:rgba(0,40,70,.85);border:1px solid rgba(0,180,255,.2);color:#e0eef8;border-bottom-left-radius:4px}
 .msg .meta{font-size:.72rem;color:#5a7a90;margin-top:4px}
+.typing{opacity:.7;font-style:italic}
 .input-row{display:flex;gap:8px}
 .input-row input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid rgba(0,180,255,.3);background:#0a1220;color:#fff;font-size:1rem;outline:none}
 .input-row input:focus{border-color:#00b4ff}
@@ -52,22 +53,22 @@ footer{text-align:center;padding:20px 0 40px;color:#4a5a6a;font-size:.8rem}
 
 <div class="chat" id="chat">
 <div class="msg bot">
-<div class="bubble">Merhaba! Ben CNR AI. PC parça, GPU, bakım, sistem toplama ve teknik konularda yardımcı olurum.<br><br>Bugün <strong>5 soru</strong> hakkın var. Sorunu yaz.</div>
+<div class="bubble">Merhaba! Ben <strong>CNR AI</strong>.<br><br>GPU, işlemci, RAM, PSU, sistem toplama, bakım, ısınma, bottleneck ve ikinci el alım-satım konularında yardımcı olurum.<br><br>Örnek: <em>"RTX 4060 ile 5600X olur mu?"</em> veya <em>"750W PSU yeterli mi 4070 için?"</em><br><br>Bugün <strong>5 soru</strong> hakkın var.</div>
 <div class="meta">CNR AI</div>
 </div>
 </div>
 
 <div class="input-row" id="inputRow">
-<input type="text" id="qInput" placeholder="Sorunu yaz..." maxlength="300" autocomplete="off">
+<input type="text" id="qInput" placeholder="Sorunu detaylı yaz..." maxlength="400" autocomplete="off">
 <button id="sendBtn" onclick="ask()">Gönder</button>
 </div>
 
 <div class="blocked" id="blocked" style="display:none">
 <h2>Hakların bitti</h2>
-<p>Bugünkü 5 soru hakkını kullandın.<br>Yarın tekrar deneyebilirsin.</p>
+<p>Bugünkü 5 soru hakkını kullandın.<br>Yarın tekrar gelebilirsin. Acil için WhatsApp: 0533 259 50 42</p>
 </div>
 
-<p class="hint">IP + gün bazlı limit. Aynı ağdaki farklı cihazlar ayrı sayılır (tarayıcı depolama).</p>
+<p class="hint">IP + gün bazlı limit • Teknik cevaplar yaklaşık değerdir</p>
 </div>
 
 <footer>CNR Tech • cnrtech.com.tr</footer>
@@ -76,136 +77,301 @@ footer{text-align:center;padding:20px 0 40px;color:#4a5a6a;font-size:.8rem}
 const MAX = 5;
 let userIP = 'unknown';
 let remaining = MAX;
+let lastTopic = null;
+let history = [];
 
 function todayKey(){
   const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-function storageKey(){
-  return 'cnr_ai_' + userIP + '_' + todayKey();
-}
+function storageKey(){ return 'cnr_ai_'+userIP+'_'+todayKey(); }
 function loadUsage(){
-  const used = parseInt(localStorage.getItem(storageKey()) || '0', 10);
-  remaining = Math.max(0, MAX - used);
-  document.getElementById('hak').textContent = remaining + ' / ' + MAX;
+  const used = parseInt(localStorage.getItem(storageKey())||'0',10);
+  remaining = Math.max(0, MAX-used);
+  document.getElementById('hak').textContent = remaining+' / '+MAX;
   document.getElementById('tarih').textContent = todayKey();
-  if(remaining <= 0){
-    document.getElementById('inputRow').style.display = 'none';
-    document.getElementById('blocked').style.display = 'block';
-  }
+  if(remaining<=0){ document.getElementById('inputRow').style.display='none'; document.getElementById('blocked').style.display='block'; }
 }
 function saveUse(){
-  const used = MAX - remaining + 1;
+  const used = MAX-remaining+1;
   localStorage.setItem(storageKey(), String(used));
-  remaining = Math.max(0, MAX - used);
-  document.getElementById('hak').textContent = remaining + ' / ' + MAX;
-  if(remaining <= 0){
-    document.getElementById('inputRow').style.display = 'none';
-    document.getElementById('blocked').style.display = 'block';
-  }
+  remaining = Math.max(0, MAX-used);
+  document.getElementById('hak').textContent = remaining+' / '+MAX;
+  if(remaining<=0){ document.getElementById('inputRow').style.display='none'; document.getElementById('blocked').style.display='block'; }
 }
 
-// IP algıla
-fetch('https://api.ipify.org?format=json')
-  .then(r => r.json())
-  .then(d => {
-    userIP = d.ip || 'unknown';
-    document.getElementById('ipShow').textContent = userIP;
-    loadUsage();
-  })
-  .catch(() => {
-    userIP = 'local-' + (localStorage.getItem('cnr_fid') || Math.random().toString(36).slice(2,10));
-    if(!localStorage.getItem('cnr_fid')) localStorage.setItem('cnr_fid', userIP.replace('local-',''));
-    document.getElementById('ipShow').textContent = 'Yerel';
-    loadUsage();
-  });
+fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{
+  userIP = d.ip||'unknown';
+  document.getElementById('ipShow').textContent = userIP;
+  loadUsage();
+}).catch(()=>{
+  userIP = 'local-'+(localStorage.getItem('cnr_fid')||Math.random().toString(36).slice(2,10));
+  if(!localStorage.getItem('cnr_fid')) localStorage.setItem('cnr_fid', userIP.replace('local-',''));
+  document.getElementById('ipShow').textContent = 'Yerel';
+  loadUsage();
+});
 
-function addMsg(text, who){
+function addMsg(text, who, cls){
   const chat = document.getElementById('chat');
   const div = document.createElement('div');
-  div.className = 'msg ' + who;
-  div.innerHTML = '<div class="bubble">' + text + '</div><div class="meta">' + (who==='user'?'Sen':'CNR AI') + '</div>';
+  div.className = 'msg '+who+(cls?' '+cls:'');
+  div.innerHTML = '<div class="bubble">'+text+'</div><div class="meta">'+(who==='user'?'Sen':'CNR AI')+'</div>';
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
+  return div;
 }
 
-// Basit ama işe yarar cevap motoru (PC/teknik odaklı)
-function answer(q){
-  const t = q.toLowerCase()
+function norm(s){
+  return s.toLowerCase()
     .replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u')
-    .replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c');
+    .replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c')
+    .replace(/â/g,'a').replace(/î/g,'i').replace(/û/g,'u');
+}
 
-  if(/merhaba|selam|hey|sa\b/.test(t))
-    return 'Merhaba! PC, GPU, bakım veya sistem hakkında sorunu sorabilirsin.';
+// ---- AKILLI MOTOR ----
+const GPU_DB = {
+  '4060': {tier:'orta', vram:'8GB', psu:550, res:'1080p yüksek / 1440p orta', note:'F/P çok iyi, 1080p kralı'},
+  '4060 ti': {tier:'orta-üst', vram:'8/16GB', psu:600, res:'1440p rahat', note:'16GB modeli VRAM için daha iyi'},
+  '4070': {tier:'üst', vram:'12GB', psu:650, res:'1440p ultra / 4K orta', note:'Ray tracing + DLSS güçlü'},
+  '4070 ti': {tier:'üst', vram:'12GB', psu:700, res:'1440p/4K', note:'Güçlü 1440p kart'},
+  '4070 super': {tier:'üst', vram:'12GB', psu:650, res:'1440p ultra', note:'Super serisi değerli'},
+  '4080': {tier:'flagship', vram:'16GB', psu:750, res:'4K yüksek', note:'Ciddi güç ister'},
+  '4090': {tier:'flagship', vram:'24GB', psu:850, res:'4K ultra', note:'En üst seviye, PSU kritik'},
+  '3060': {tier:'orta', vram:'12GB', psu:550, res:'1080p/1440p', note:'İkinci elde hâlâ mantıklı'},
+  '3070': {tier:'orta-üst', vram:'8GB', psu:650, res:'1440p', note:'İyi ikinci el seçenek'},
+  '3080': {tier:'üst', vram:'10/12GB', psu:750, res:'1440p/4K', note:'Güçlü ama ısınabilir'},
+  '7600': {tier:'orta', vram:'8GB', psu:550, res:'1080p/1440p', note:'AMD tarafında iyi F/P'},
+  '7800 xt': {tier:'üst', vram:'16GB', psu:700, res:'1440p ultra', note:'VRAM bolluğu avantaj'},
+  '7900 xt': {tier:'flagship', vram:'20GB', psu:750, res:'4K', note:'Raster performansı yüksek'},
+  '7900 xtx': {tier:'flagship', vram:'24GB', psu:850, res:'4K ultra', note:'AMD amiral gemisi'},
+  '2060': {tier:'giriş', vram:'6GB', psu:500, res:'1080p orta-yüksek', note:'Eski ama hâlâ iş görür'},
+  '6600': {tier:'orta', vram:'8GB', psu:500, res:'1080p', note:'Uygun fiyatlı AMD'}
+};
 
-  if(/gpu|ekran kart|rtx|rx\s*\d|4060|4070|4080|4090|7800|7900/.test(t))
-    return 'GPU konusunda yardımcı olurum. Alım-satım, sıcaklık, sürücü, bottleneck veya performans sorunu mu var? Modelini yazarsan daha net cevap veririm. RTX 40/50 ve RX serisiyle çalışıyoruz.';
+const CPU_DB = {
+  '5600': {gen:'AM4', tier:'orta', pair:'RTX 3060-4060 / RX 7600', note:'Hâlâ çok iyi F/P'},
+  '5600x': {gen:'AM4', tier:'orta', pair:'RTX 3060-4070', note:'Güçlü 6 çekirdek'},
+  '5700x': {gen:'AM4', tier:'orta-üst', pair:'RTX 4070 / 7800 XT', note:'8 çekirdek, yayın+oyun'},
+  '5800x3d': {gen:'AM4', tier:'üst', pair:'RTX 4070-4080', note:'Oyun canavarı (3D V-Cache)'},
+  '7500f': {gen:'AM5', tier:'orta', pair:'RTX 4060-4070', note:'Uygun AM5 giriş'},
+  '7600': {gen:'AM5', tier:'orta', pair:'RTX 4060-4070', note:'Dengeli AM5'},
+  '7700': {gen:'AM5', tier:'orta-üst', pair:'RTX 4070-4080', note:'8 çekirdek AM5'},
+  '7800x3d': {gen:'AM5', tier:'üst', pair:'RTX 4070-4090', note:'Şu an oyun kralı'},
+  '9600x': {gen:'AM5', tier:'orta-üst', pair:'RTX 4070-4080', note:'Yeni nesil güçlü'},
+  '9700x': {gen:'AM5', tier:'üst', pair:'RTX 4080-4090', note:'Çok yönlü üst segment'},
+  'i5-12400': {gen:'LGA1700', tier:'orta', pair:'RTX 4060', note:'Intel tarafında sağlam'},
+  'i5-13400': {gen:'LGA1700', tier:'orta', pair:'RTX 4060-4070', note:'İyi çok çekirdek'},
+  'i5-14600k': {gen:'LGA1700', tier:'orta-üst', pair:'RTX 4070-4080', note:'Güçlü hibrit mimari'},
+  'i7-13700k': {gen:'LGA1700', tier:'üst', pair:'RTX 4080', note:'Yayın+oyun sert'}
+};
 
-  if(/islemci|cpu|ryzen|intel|i5|i7|i9|5600|5700|7500|7600|7700|9600/.test(t))
-    return 'İşlemci tarafında Ryzen ve Intel modelleriyle ilgileniyoruz. Oyun / iş / yayın için mi bakıyorsun? Bütçeni ve kullanım amacını yaz, yönlendireyim.';
+function findGPU(t){
+  // uzun isimleri önce dene
+  const keys = Object.keys(GPU_DB).sort((a,b)=>b.length-a.length);
+  for(const k of keys){
+    if(t.includes(k) || t.includes('rtx '+k) || t.includes('rx '+k)) return {name:k, ...GPU_DB[k]};
+  }
+  // rtx 40 60 gibi boşluklu
+  const m = t.match(/(?:rtx|rx)\s*(\d{3,4}\s*(?:ti|super|xt|xtx)?)/);
+  if(m){
+    const key = m[1].replace(/\s+/g,' ').trim();
+    for(const k of keys){ if(key.includes(k) || k.includes(key.replace(' ',''))) return {name:k, ...GPU_DB[k]}; }
+  }
+  return null;
+}
+function findCPU(t){
+  const keys = Object.keys(CPU_DB).sort((a,b)=>b.length-a.length);
+  for(const k of keys){
+    if(t.includes(k) || t.includes('ryzen '+k) || t.includes('ryzen 5 '+k) || t.includes('ryzen 7 '+k)) return {name:k, ...CPU_DB[k]};
+  }
+  return null;
+}
+function findBudget(t){
+  const m = t.match(/(\d{2,3})\s*[kK]/ ) || t.match(/(\d{4,6})\s*(?:tl|lira)/);
+  if(m){
+    let n = parseInt(m[1],10);
+    if(n < 500) n = n * 1000; // 40k -> 40000
+    return n;
+  }
+  return null;
+}
+function has(t, arr){ return arr.some(x => t.includes(x)); }
 
-  if(/ram|bellek|ddr4|ddr5|32gb|16gb/.test(t))
-    return 'RAM için oyun ve genel kullanımda 32GB artık ideal. DDR4 mü DDR5 mi sistemin? Anakart ve işlemci nesline göre öneri değişir.';
+function answer(q){
+  const t = norm(q);
+  const gpu = findGPU(t);
+  const cpu = findCPU(t);
+  const budget = findBudget(t);
+  const wantBuy = has(t, ['al','alayim','alsam','alcam','alicam','satin','bakiyorum','lazim','istiyorum','oner','öner']);
+  const wantSell = has(t, ['sat','satiyorum','satayim','bozdur','devret']);
+  const wantCompare = has(t, ['mi yoksa','mi daha','karsilastir','vs','yoksa','hangisi','daha iyi','mi iyi']);
+  const wantCompat = has(t, ['uyumlu','olur mu','yeter mi','kacar mi','bottleneck','darboğaz','darboğaz','ceker mi','göturur','goturur']);
+  const wantTemp = has(t, ['sicak','isin','derece','thermal','throttle','fan ses']);
+  const wantPsu = has(t, ['psu','power','guc kaynag','watt','kaç w','kac w']);
+  const wantBuild = has(t, ['toplama','sistem','kasa kur','hazir pc','full set','tam sistem','pc topla']);
+  const wantMaint = has(t, ['bakim','temizlik','macun','pasta','toz','format']);
+  const res1440 = has(t, ['1440','2k','qhd']);
+  const res4k = has(t, ['4k','2160']);
+  const res1080 = has(t, ['1080','fhd','full hd']);
 
-  if(/psu|power|guc kaynag|kaç watt|watt/.test(t))
-    return 'PSU seçerken GPU + CPU TDP toplamına %30-40 pay bırak. 750W kaliteli (80+ Bronze/Gold) çoğu orta-üst sistem için yeterli. Marka/model yazarsan netleştiririm.';
+  // selam
+  if(/^(merhaba|selam|hey|sa|selamun|iyi gunler|gunaydin)(\s|$)/.test(t) && t.length < 25)
+    return 'Merhaba! Sorunu net yaz, yardımcı olayım. GPU, işlemci, uyum, PSU, bakım… hepsine bakarım.';
 
-  if(/bakim|temizlik|termal|macun|pasta|toz/.test(t))
-    return 'Bakımda: toz temizliği + kaliteli termal macun + gerekirse termal pad. Yılda 1 kez ideal. Isı 80°C üstüne sık çıkıyorsa bakım zamanı gelmiş demektir. Randevu için WhatsApp yazabilirsin.';
+  // teşekkür
+  if(has(t, ['tesekkur','sagol','eyw','eyvallah','thanks','thx']) && t.length < 40)
+    return 'Rica ederim 👊 Başka soru kalırsa yaz. İyi oyunlar!';
 
-  if(/format|windows|sifirlama|temiz kurulum/.test(t))
-    return 'Format / temiz kurulum yapıyoruz. Önemli dosyalarını yedekle, lisans anahtarlarını not al. SSD ise kurulum hızlı biter. İstersen servise bırakabilirsin.';
+  // iletişim
+  if(has(t, ['whatsapp','wp','numara','iletisim','ulas','telefon no']))
+    return 'WhatsApp: <strong>0533 259 50 42</strong><br>Mail: cnrtech@outlook.com.tr<br>Konya merkezli çalışıyoruz.';
 
-  if(/sicaklik|isinma|fan|throttle|thermal/.test(t))
-    return 'CPU genelde 70-85°C, GPU 70-83°C altı yükte normal sayılır. Sürekli 90+ görüyorsan macun, kasa hava akışı veya fan eğrisi kontrol edilmeli. Stress test araçlarımız ana sayfada var.';
+  // konum
+  if(has(t, ['nerede','adres','konya','konum','magaza','dukkan']))
+    return 'Konya merkezliyiz. Alım-satım ve servis için en hızlı yol WhatsApp: <strong>0533 259 50 42</strong>';
 
-  if(/fiyat|ne kadar|ucret|kaç para|tl/.test(t))
-    return 'Fiyatlar ürüne ve güncel piyasaya göre değişir. GPU, sistem veya bakım için net fiyat istersen WhatsApp’tan yaz: 0533 259 50 42';
+  // test araçları
+  if(has(t, ['stress test','olu piksel','dead pixel','test araci','benchmark site']))
+    return 'Sitede ücretsiz araçlar var:<br>• Ana sayfa → CPU / GPU stress + ölü piksel<br>• <a href="telefon.html" style="color:#00b4ff">Telefon testleri</a> (dokunmatik, kamera, ses, sensör)<br>İstersen şimdi dene.';
 
-  if(/nerede|adres|konya|konum|magaza/.test(t))
-    return 'Konya merkezli çalışıyoruz. Alım-satım ve teknik servis için WhatsApp üzerinden ulaşman en hızlısı: 0533 259 50 42';
+  // ---- GPU + CPU uyum / bottleneck ----
+  if(gpu && cpu && (wantCompat || wantCompare || wantBuy || t.includes('ile'))){
+    lastTopic = 'compat';
+    return `<strong>${cpu.name.toUpperCase()}</strong> + <strong>${gpu.name.toUpperCase()}</strong> kombinasyonu:<br><br>`+
+      `• CPU: ${cpu.note} (${cpu.gen})<br>`+
+      `• GPU: ${gpu.note}<br>`+
+      `• Tipik eşleşme: ${cpu.pair}<br>`+
+      `• Önerilen PSU: ~${Math.max(gpu.psu, 550)}W+ kaliteli<br><br>`+
+      `Genelde bu ikili dengeli çalışır. Çok uç fark yoksa ciddi bottleneck olmaz. Oyun mu, yayın mı öncelik?`;
+  }
 
-  if(/whatsapp|iletisim|ulas|numara/.test(t))
-    return 'WhatsApp: 0533 259 50 42<br>E-posta: cnrtech@outlook.com.tr';
+  // ---- tek GPU ----
+  if(gpu){
+    lastTopic = 'gpu';
+    let out = `<strong>${gpu.name.toUpperCase()}</strong> özeti:<br><br>`+
+      `• Seviye: ${gpu.tier}<br>`+
+      `• VRAM: ${gpu.vram}<br>`+
+      `• Çözünürlük: ${gpu.res}<br>`+
+      `• PSU önerisi: ~${gpu.psu}W+ (kaliteli marka)<br>`+
+      `• Not: ${gpu.note}`;
+    if(wantPsu) out += `<br><br>Bu kart için <strong>${gpu.psu}W</strong> altı riskli, özellikle K modeli CPU varsa +50-100W bırak.';
+    if(wantSell) out += `<br><br>Satış düşünüyorsan güncel piyasa için WhatsApp’tan yaz, bakarız: 0533 259 50 42`;
+    if(wantBuy) out += `<br><br>Alım için stok/fiyat güncelini WhatsApp’tan sorabilirsin.`;
+    if(wantTemp) out += `<br><br>Isınma: yükte 70-83°C normal. 90+ sürekli ise macun, kasa akışı veya fan eğrisi kontrol edilmeli.`;
+    if(res4k && gpu.tier !== 'flagship' && gpu.tier !== 'üst') out += `<br><br>⚠️ 4K için bu kart zorlanabilir. 1440p daha mantıklı.`;
+    if(res1440 && gpu.tier === 'giriş') out += `<br><br>⚠️ 1440p’de ayar düşürmen gerekebilir.`;
+    return out;
+  }
 
-  if(/stress|test|benchmark|ölü piksel|piksel/.test(t))
-    return 'Sitemizde ücretsiz test araçları var:<br>• PC: CPU/GPU stress + ölü piksel<br>• Telefon: dokunmatik, kamera, ses, sensör<br>Ana sayfadaki Test Araçları bölümünden girebilirsin.';
+  // ---- tek CPU ----
+  if(cpu){
+    lastTopic = 'cpu';
+    return `<strong>${cpu.name.toUpperCase()}</strong>:<br><br>`+
+      `• Platform: ${cpu.gen}<br>`+
+      `• Seviye: ${cpu.tier}<br>`+
+      `• İyi eşleştiği GPU’lar: ${cpu.pair}<br>`+
+      `• Not: ${cpu.note}<br><br>`+
+      (wantCompat ? 'Hangi GPU ile kullanacaksın, yaz netleştireyim.' : 'GPU modelini de yazarsan uyumu net söylerim.');
+  }
 
-  if(/sistem|toplama|kasa|hazir pc|gaming pc/.test(t))
-    return 'Toplama sistem yapıyoruz. Bütçe + kullanım (oyun 1080p/1440p, yayın, ofis) yaz, ona göre parça listesi çıkarayım. İkinci el + sıfır karışık da toparlanabilir.';
+  // ---- PSU ----
+  if(wantPsu){
+    lastTopic = 'psu';
+    if(t.includes('4090') || t.includes('7900 xtx')) return 'Bu seviye kartlar için <strong>850W+</strong> kaliteli (Gold) PSU şart. Ucuz yüksek watt yetmez, korumalar ve stabilite önemli.';
+    if(t.includes('4080') || t.includes('7900 xt')) return 'Genelde <strong>750-850W</strong> kaliteli PSU yeterli. CPU’ya göre +50W pay bırak.';
+    if(t.includes('4070') || t.includes('7800')) return 'Çoğu sistemde <strong>650-750W</strong> kaliteli PSU yeterli.';
+    if(t.includes('4060') || t.includes('7600') || t.includes('3060')) return '<strong>550-650W</strong> kaliteli PSU yeterli. 500W altı önermem.';
+    return 'PSU kuralı: GPU TDP + CPU TDP + %30-40 pay. Marka kalitesi watt kadar önemli (CORSIR, Seasonic, Cooler Master, MSI, FSP…). Sistemindeki GPU/CPU’yu yaz, net watt söyleyeyim.';
+  }
 
-  if(/anakart|motherboard|b550|b650|b760/.test(t))
-    return 'Anakart işlemci soketine ve RAM tipine (DDR4/DDR5) göre seçilmeli. B550/B650 AMD, B760 Intel tarafında popüler. Hangi işlemciyi kullanıyorsun?';
+  // ---- RAM ----
+  if(has(t, ['ram','bellek','ddr4','ddr5','32gb','16gb','8gb'])){
+    lastTopic = 'ram';
+    let out = 'Güncel öneri:<br>• Oyun: <strong>32GB</strong> ideal<br>• Ofis/hafif: 16GB idare eder<br>• 8GB artık yetersiz';
+    if(t.includes('ddr5')) out += '<br><br>DDR5 için AM5 veya yeni Intel platform gerekir. 6000MHz CL30 civarı tatlı nokta.';
+    if(t.includes('ddr4')) out += '<br><br>DDR4’te 3200-3600MHz iyi. AM4 ile uyumlu.';
+    if(t.includes('16') && wantBuy) out += '<br><br>16→32 yükseltme çoğu oyunda fark ettirir (1% low FPS).';
+    return out;
+  }
 
-  if(/ssd|nvme|hdd|depolama/.test(t))
-    return 'Oyun ve sistem diski için NVMe SSD şart. 1TB genelde ideal başlangıç. HDD sadece arşiv için mantıklı. Marka/model sorarsan bakarım.';
+  // ---- bakım ----
+  if(wantMaint){
+    lastTopic = 'bakim';
+    return 'Bakım paketi genelde:<br>• Komple toz temizliği<br>• CPU (gerekirse GPU) termal macun<br>• Fan kontrolü / termal pad kontrolü<br>• İstenirse format<br><br>Isı 80-85°C üstüne sık çıkıyorsa zamanı gelmiş demektir. Randevu: WhatsApp <strong>0533 259 50 42</strong>';
+  }
 
-  if(/tesekkur|sağol|sagol|eyw|eyvallah/.test(t))
-    return 'Rica ederim! Başka sorun olursa yaz. İyi oyunlar / iyi çalışmalar.';
+  // ---- ısınma ----
+  if(wantTemp){
+    lastTopic = 'temp';
+    return 'Referans değerler (yük altında):<br>• CPU: 70-85°C normal, 95+ tehlike<br>• GPU: 70-83°C normal, 90+ dikkat<br><br>Çözüm sırası: kasa hava akışı → fan eğrisi → macun → gerekirse daha iyi soğutucu. Ana sayfada stress test araçlarımız var, ölçüp bakabilirsin.';
+  }
 
-  // genel
-  return 'Anladım. Bu konuda net cevap için biraz daha detay lazım.<br><br>• Parça / model adı<br>• Sorunun ne olduğu (alınır mı, ısınma, uyum, fiyat…)<br><br>Yazarsan daha net yönlendireyim. Acil ise WhatsApp: 0533 259 50 42';
+  // ---- sistem toplama ----
+  if(wantBuild || budget){
+    lastTopic = 'build';
+    if(budget){
+      if(budget < 25000) return `~${(budget/1000).toFixed(0)}K bütçede ikinci el ağırlıklı düşünmek lazım. Ryzen 5 + RTX 3060/4060 bandı hedeflenebilir. Net liste için kullanım amacını (1080p oyun / ofis) yaz.`;
+      if(budget < 45000) return `~${(budget/1000).toFixed(0)}K ile 1080p/1440p güzel sistem çıkar. Örnek iskelet: Ryzen 5 5600/7500F + RTX 4060/4070 + 32GB RAM. Detay için oyun mu yayın mı söyle.`;
+      if(budget < 70000) return `~${(budget/1000).toFixed(0)}K üst-orta segment: 7800X3D veya 7700 + RTX 4070 Super / 7800 XT + 32GB. 1440p ultra rahat.`;
+      return `~${(budget/1000).toFixed(0)}K ile üst seviye toplanır (4080/4090 bandı). İhtiyaç listeni yaz, şişirmeyelim.`;
+    }
+    return 'Sistem toplama için 3 bilgi yeterli:<br>1) Bütçe (TL)<br>2) Çözünürlük (1080p / 1440p / 4K)<br>3) Kullanım (sadece oyun / yayın / iş)<br><br>Yaz, ona göre net parça listesi çıkarayım.';
+  }
+
+  // ---- SSD ----
+  if(has(t, ['ssd','nvme','hdd','depolama','disk'])){
+    return 'Sistem + oyun diski için <strong>NVMe SSD</strong> şart. 1TB tatlı başlangıç. HDD sadece arşiv/film için. Gen4 NVMe fiyat/performans olarak şu an mantıklı.';
+  }
+
+  // ---- anakart ----
+  if(has(t, ['anakart','motherboard','b550','b650','b760','x670','z790'])){
+    return 'Anakart = işlemci soketi + RAM tipi.<br>• AM4 → B550<br>• AM5 → B650 / B850<br>• Intel 12-14 → B760 / Z790<br><br>İşlemcini yaz, doğru chipset’i net söyleyeyim.';
+  }
+
+  // ---- fiyat genel ----
+  if(has(t, ['fiyat','ne kadar','ucret','kaç para','kac para','tl'])){
+    return 'Fiyatlar güne ve ürüne göre değişiyor. Net rakam için model + durum (sıfır/ikinci el) yaz, ya da direkt WhatsApp: <strong>0533 259 50 42</strong>';
+  }
+
+  // ---- alım satım ----
+  if(wantSell){
+    return 'Satmak istediğin parçanın modelini, yaşını ve durumunu yaz. Ya da foto/detay için WhatsApp: <strong>0533 259 50 42</strong> — hızlı dönüş yapıyoruz.';
+  }
+  if(wantBuy && !gpu && !cpu){
+    return 'Ne almak istiyorsun? (GPU / işlemci / full sistem / aksesuar)<br>Bütçe ve kullanım amacını da eklersen direkt yönlendireyim.';
+  }
+
+  // ---- takip sorusu (lastTopic) ----
+  if(lastTopic === 'gpu' && has(t, ['psu','watt','power']))
+    return 'Önceki GPU için genelde 650-750W bandı yeterli olur. Tam modelini tekrar yazarsan net watt vereyim.';
+  if(lastTopic === 'build' && budget)
+    return 'Bütçeyi aldım. Şimdi çözünürlük ve kullanım (oyun/yayın) yaz, listeyi netleştireyim.';
+
+  // ---- genel akıllı fallback ----
+  if(t.length < 12)
+    return 'Biraz daha açar mısın? Model adı veya neyi merak ettiğini yaz (ör: "4060 5600x ile uyumlu mu").';
+
+  return 'Konuyu anladım ama net cevap için şu detaylar lazım:<br><br>• Parça modeli (örn: RTX 4070, Ryzen 5 5600)<br>• Ne soruyorsun: uyum / fiyat / ısınma / öneri / satış<br><br>Tek cümlede yazman yeterli. Acilse WhatsApp: <strong>0533 259 50 42</strong>';
 }
 
 function ask(){
   const input = document.getElementById('qInput');
   const q = input.value.trim();
-  if(!q) return;
-  if(remaining <= 0) return;
+  if(!q || remaining<=0) return;
 
-  addMsg(q.replace(/</g,'<'), 'user');
+  addMsg(q.replace(/</g,'<').replace(/>/g,'>'), 'user');
   input.value = '';
   saveUse();
+  history.push(q);
 
-  // küçük gecikme ile “düşünüyor” hissi
+  const typing = addMsg('Düşünüyor...', 'bot', 'typing');
   setTimeout(() => {
+    typing.remove();
     addMsg(answer(q), 'bot');
-  }, 400 + Math.random()*500);
+  }, 500 + Math.random()*700);
 }
 
-document.getElementById('qInput').addEventListener('keydown', e => {
-  if(e.key === 'Enter') ask();
-});
+document.getElementById('qInput').addEventListener('keydown', e => { if(e.key==='Enter') ask(); });
 </script>
 </body>
 </html>
