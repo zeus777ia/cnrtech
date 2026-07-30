@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Telefon Test Araçları | CNR Tech</title>
-<meta name="description" content="Ücretsiz telefon test araçları: dokunmatik, ekran, sensör, titreşim ve yenileme hızı testi.">
+<meta name="description" content="Ücretsiz telefon test araçları: dokunmatik, ekran, sensör, ses, kamera, titreşim ve yenileme hızı testi.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#05080f;color:#eee;line-height:1.5;min-height:100vh;background-image:radial-gradient(ellipse at 30% 10%,rgba(0,180,255,.07) 0%,transparent 50%),linear-gradient(180deg,#05080f,#0a0f1a)}
@@ -20,13 +20,16 @@ header p{color:#7a9bb8;font-size:.9rem}
 .btn:active{background:rgba(0,180,255,.3)}
 .btn-run{background:#00b4ff;color:#000;border:none}
 .btn-run:active{background:#33c4ff}
+.btn-stop{background:rgba(255,80,80,.2);color:#ff6b6b;border-color:rgba(255,80,80,.4)}
 #touchArea{height:220px;background:#0a1220;border-radius:12px;border:1px dashed rgba(0,180,255,.3);position:relative;overflow:hidden;touch-action:none}
 .touch-dot{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(0,180,255,.5);border:2px solid #00b4ff;transform:translate(-50%,-50%);pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff}
 #sensorBox{font-family:monospace;font-size:.85rem;background:#0a1220;padding:12px;border-radius:10px;line-height:1.7;color:#9bb4c9}
 #sensorBox span{color:#00b4ff;font-weight:600}
 #refreshResult{font-size:1.8rem;font-weight:700;color:#00b4ff;text-align:center;padding:12px 0}
+#cameraPreview{width:100%;max-height:280px;border-radius:12px;background:#0a1220;display:none;object-fit:cover}
+#micLevel{height:12px;background:#0a1220;border-radius:6px;overflow:hidden;margin-top:10px}
+#micBar{height:100%;width:0%;background:linear-gradient(90deg,#00b4ff,#25D366);transition:width .08s}
 footer{text-align:center;padding:30px 0 40px;color:#4a5a6a;font-size:.8rem}
-/* overlays */
 #fullOverlay{display:none;position:fixed;inset:0;z-index:9999;background:#000;color:#fff}
 #fullOverlay .info{position:absolute;top:16px;left:0;right:0;text-align:center;font-size:.85rem;opacity:.7;padding:0 12px}
 #fullOverlay .close-btn{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 28px;border:none;border-radius:30px;background:#00b4ff;color:#000;font-weight:700;font-size:1rem}
@@ -58,7 +61,36 @@ footer{text-align:center;padding:30px 0 40px;color:#4a5a6a;font-size:.8rem}
 <button class="btn btn-run" onclick="startScreenTest()">Ekran Testini Başlat</button>
 </div>
 
-<!-- 3. SENSÖR -->
+<!-- 3. SES -->
+<div class="tool">
+<h2>🔊 Ses & Hoparlör Testi</h2>
+<p>Farklı frekanslarda test tonları çalar. Sol/sağ ve hoparlör kontrolü için kullan.</p>
+<button class="btn" onclick="playTone(440)">440 Hz (La) Tonu</button>
+<button class="btn" onclick="playTone(880)">880 Hz (Yüksek) Tonu</button>
+<button class="btn" onclick="playTone(220)">220 Hz (Kalın) Tonu</button>
+<button class="btn btn-run" onclick="playSweep()">Frekans Tarama (Sweep)</button>
+</div>
+
+<!-- 4. MİKROFON -->
+<div class="tool">
+<h2>🎤 Mikrofon Testi</h2>
+<p>Mikrofona konuş, ses seviyesini canlı gör. İzin istenecek.</p>
+<div id="micLevel"><div id="micBar"></div></div>
+<p id="micStatus" style="font-size:.85rem;color:#7a9bb8;margin-top:8px">Hazır</p>
+<button class="btn btn-run" id="micBtn" onclick="toggleMic()">Mikrofonu Başlat</button>
+</div>
+
+<!-- 5. KAMERA -->
+<div class="tool">
+<h2>📷 Kamera Testi</h2>
+<p>Ön ve arka kamerayı test et. İzin istenecek.</p>
+<video id="cameraPreview" autoplay playsinline muted></video>
+<button class="btn btn-run" id="camBtn" onclick="startCamera('environment')">Arka Kamerayı Aç</button>
+<button class="btn" onclick="startCamera('user')">Ön Kamerayı Aç</button>
+<button class="btn btn-stop" id="camStopBtn" style="display:none" onclick="stopCamera()">Kamerayı Kapat</button>
+</div>
+
+<!-- 6. SENSÖR -->
 <div class="tool">
 <h2>📐 Sensör Testi (Jiroskop / İvmeölçer)</h2>
 <p>Telefonu hareket ettir, eğ, salla. Canlı sensör verilerini izle.</p>
@@ -71,24 +103,24 @@ Alpha: <span id="sA">—</span> | Beta: <span id="sB">—</span> | Gamma: <span 
 <button class="btn" id="sensorBtn" onclick="toggleSensor()">Sensörü Başlat</button>
 </div>
 
-<!-- 4. TİTREŞİM -->
+<!-- 7. TİTREŞİM -->
 <div class="tool">
 <h2>📳 Titreşim Testi</h2>
-<p>Telefonunun titreşim motorunu test et. Farklı modellerde farklı hissedersin.</p>
+<p>Telefonunun titreşim motorunu test et.</p>
 <button class="btn" onclick="vibrateShort()">Kısa Titreşim</button>
 <button class="btn" onclick="vibrateLong()">Uzun Titreşim</button>
 <button class="btn" onclick="vibratePattern()">Desenli Titreşim</button>
 </div>
 
-<!-- 5. YENİLEME HIZI -->
+<!-- 8. YENİLEME HIZI -->
 <div class="tool">
 <h2>⚡ Ekran Yenileme Hızı</h2>
-<p>Tarayıcı üzerinden yaklaşık Hz değerini ölçer (60 / 90 / 120 Hz tespiti).</p>
+<p>Yaklaşık Hz değerini ölçer (60 / 90 / 120 Hz).</p>
 <div id="refreshResult">— Hz</div>
 <button class="btn btn-run" onclick="measureRefresh()">Ölçümü Başlat</button>
 </div>
 
-<!-- 6. PİL -->
+<!-- 9. PİL -->
 <div class="tool">
 <h2>🔋 Pil Bilgisi</h2>
 <p>Destekleyen tarayıcılarda pil seviyesi ve şarj durumu.</p>
@@ -102,9 +134,8 @@ CNR Tech • cnrtech.com.tr<br>
 Bu araçlar tarayıcı API'lerini kullanır. Sonuçlar yaklaşık değerlerdir.
 </footer>
 
-<!-- FULLSCREEN SCREEN TEST -->
 <div id="fullOverlay">
-<div class="info">Ekrana dokun → sonraki renk • Sağ üstten kapat</div>
+<div class="info">Ekrana dokun → sonraki renk</div>
 <button class="close-btn" onclick="closeScreenTest()">Kapat</button>
 </div>
 
@@ -113,23 +144,18 @@ Bu araçlar tarayıcı API'lerini kullanır. Sonuçlar yaklaşık değerlerdir.
 const touchArea = document.getElementById('touchArea');
 const touchCount = document.getElementById('touchCount');
 const dots = new Map();
-
 function updateDots(e){
   e.preventDefault();
-  // mevcut noktaları temizle
-  dots.forEach(d => d.remove());
-  dots.clear();
+  dots.forEach(d => d.remove()); dots.clear();
   const touches = e.touches || [];
   touchCount.textContent = touches.length;
   for(let i=0;i<touches.length;i++){
     const t = touches[i];
     const rect = touchArea.getBoundingClientRect();
-    const x = t.clientX - rect.left;
-    const y = t.clientY - rect.top;
     const el = document.createElement('div');
     el.className = 'touch-dot';
-    el.style.left = x + 'px';
-    el.style.top = y + 'px';
+    el.style.left = (t.clientX - rect.left) + 'px';
+    el.style.top = (t.clientY - rect.top) + 'px';
     el.textContent = i+1;
     touchArea.appendChild(el);
     dots.set(t.identifier, el);
@@ -140,7 +166,7 @@ touchArea.addEventListener('touchmove', updateDots, {passive:false});
 touchArea.addEventListener('touchend', updateDots, {passive:false});
 touchArea.addEventListener('touchcancel', updateDots, {passive:false});
 
-// ===== EKRAN TESTİ =====
+// ===== EKRAN =====
 const screenColors = ['#000000','#FFFFFF','#FF0000','#00FF00','#0000FF','#FFFF00','#FF00FF','#00FFFF','#808080'];
 let screenIdx = 0;
 function startScreenTest(){
@@ -163,6 +189,113 @@ document.getElementById('fullOverlay').addEventListener('click', e => {
   nextScreenColor();
 });
 
+// ===== SES (Web Audio API) =====
+let audioCtx = null;
+function getAudio(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playTone(freq, duration = 1.2){
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.3, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + duration);
+}
+function playSweep(){
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(200, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(2000, ctx.currentTime + 2.5);
+  gain.gain.setValueAtTime(0.25, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2.5);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 2.5);
+}
+
+// ===== MİKROFON =====
+let micStream = null, micAnim = null, micActive = false;
+async function toggleMic(){
+  if(micActive){
+    stopMic();
+    return;
+  }
+  try{
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    micActive = true;
+    document.getElementById('micBtn').textContent = 'Mikrofonu Durdur';
+    document.getElementById('micBtn').classList.add('btn-stop');
+    document.getElementById('micStatus').textContent = 'Dinleniyor... konuşun';
+    const ctx = getAudio();
+    const source = ctx.createMediaStreamSource(micStream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    source.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    function update(){
+      if(!micActive) return;
+      analyser.getByteFrequencyData(data);
+      let sum = 0;
+      for(let i=0;i<data.length;i++) sum += data[i];
+      const avg = sum / data.length;
+      const pct = Math.min(100, avg * 1.8);
+      document.getElementById('micBar').style.width = pct + '%';
+      micAnim = requestAnimationFrame(update);
+    }
+    update();
+  } catch(e){
+    document.getElementById('micStatus').textContent = 'Mikrofon izni reddedildi veya desteklenmiyor';
+  }
+}
+function stopMic(){
+  micActive = false;
+  if(micStream){ micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  if(micAnim) cancelAnimationFrame(micAnim);
+  document.getElementById('micBar').style.width = '0%';
+  document.getElementById('micBtn').textContent = 'Mikrofonu Başlat';
+  document.getElementById('micBtn').classList.remove('btn-stop');
+  document.getElementById('micStatus').textContent = 'Durduruldu';
+}
+
+// ===== KAMERA =====
+let camStream = null;
+async function startCamera(facing){
+  stopCamera();
+  try{
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 720 } },
+      audio: false
+    });
+    const video = document.getElementById('cameraPreview');
+    video.srcObject = camStream;
+    video.style.display = 'block';
+    document.getElementById('camStopBtn').style.display = 'block';
+  } catch(e){
+    alert('Kamera izni reddedildi veya bu kamera kullanılamıyor.');
+  }
+}
+function stopCamera(){
+  if(camStream){
+    camStream.getTracks().forEach(t => t.stop());
+    camStream = null;
+  }
+  const video = document.getElementById('cameraPreview');
+  video.srcObject = null;
+  video.style.display = 'none';
+  document.getElementById('camStopBtn').style.display = 'none';
+}
+
 // ===== SENSÖR =====
 let sensorActive = false;
 function toggleSensor(){
@@ -173,7 +306,6 @@ function toggleSensor(){
     document.getElementById('sensorBtn').textContent = 'Sensörü Başlat';
     return;
   }
-  // iOS 13+ permission
   if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
     DeviceMotionEvent.requestPermission().then(r => {
       if(r === 'granted') startSensor();
@@ -202,9 +334,9 @@ function onOrient(e){
 }
 
 // ===== TİTREŞİM =====
-function vibrateShort(){ if(navigator.vibrate) navigator.vibrate(80); else alert('Bu cihaz titreşimi desteklemiyor'); }
-function vibrateLong(){ if(navigator.vibrate) navigator.vibrate(400); else alert('Bu cihaz titreşimi desteklemiyor'); }
-function vibratePattern(){ if(navigator.vibrate) navigator.vibrate([100,50,100,50,200,100,400]); else alert('Bu cihaz titreşimi desteklemiyor'); }
+function vibrateShort(){ if(navigator.vibrate) navigator.vibrate(80); else alert('Desteklenmiyor'); }
+function vibrateLong(){ if(navigator.vibrate) navigator.vibrate(400); else alert('Desteklenmiyor'); }
+function vibratePattern(){ if(navigator.vibrate) navigator.vibrate([100,50,100,50,200,100,400]); else alert('Desteklenmiyor'); }
 
 // ===== YENİLEME HIZI =====
 function measureRefresh(){
@@ -218,12 +350,10 @@ function measureRefresh(){
       requestAnimationFrame(tick);
     } else {
       const hz = Math.round(frames * 1000 / (now - start));
-      // en yakın standart değere yuvarla
       let display = hz;
       if(hz > 110) display = 120;
       else if(hz > 80) display = 90;
       else if(hz > 50) display = 60;
-      else display = hz;
       result.textContent = display + ' Hz';
     }
   }
