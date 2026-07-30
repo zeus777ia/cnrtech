@@ -11,18 +11,13 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#060a14;
-  --bg2:#0b1220;
   --card:rgba(12,20,38,.75);
   --cyan:#00e5ff;
-  --cyan2:#00b8d9;
   --violet:#7c5cff;
-  --violet-soft:rgba(124,92,255,.15);
   --text:#e8f0ff;
   --muted:#8ba3c7;
   --border:rgba(0,229,255,.18);
-  --glow:0 0 40px rgba(0,229,255,.25);
   --amber:#e8a05a;
-  --amber-soft:#2a1f14;
 }
 html{scroll-behavior:smooth}
 body{
@@ -62,18 +57,54 @@ body::before{
 }
 
 header{
-  padding:20px 0 18px;
+  padding:14px 0 16px;
   text-align:center;
   border-bottom:1px solid var(--border);
   backdrop-filter:blur(12px);
-  background:rgba(6,10,20,.6);
+  background:rgba(6,10,20,.75);
   position:sticky;top:0;z-index:100;
 }
-.top-nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.logo-img{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  border-radius:14px;
+  display:block;
+  background:rgba(0,229,255,.06);
+  border:1px solid rgba(0,229,255,.2);
+  padding:4px;
+  box-shadow:0 0 20px rgba(0,229,255,.25);
+}
+.logo-text{
+  text-align:left;
+}
+.logo-text .brand{
+  font-size:1.25rem;
+  font-weight:800;
+  background:linear-gradient(90deg,#fff,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.2;
+}
+.logo-text .tagline{
+  color:var(--muted);
+  font-size:.82rem;
+  letter-spacing:.4px;
+  font-weight:500;
+  margin-top:2px;
+}
+.top-nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .top-nav a{
   display:inline-flex;align-items:center;gap:6px;
-  padding:9px 18px;border-radius:999px;
-  font-size:.88rem;font-weight:600;text-decoration:none;
+  padding:8px 16px;border-radius:999px;
+  font-size:.86rem;font-weight:600;text-decoration:none;
   color:var(--cyan);background:rgba(0,229,255,.08);
   border:1px solid rgba(0,229,255,.28);
   transition:all .3s cubic-bezier(.4,0,.2,1);
@@ -87,28 +118,19 @@ header{
   background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(124,92,255,.2));
   border-color:rgba(0,229,255,.45);color:#fff;
 }
-.logo-img{
-  max-width:220px;width:100%;height:auto;
-  margin:0 auto 8px;display:block;
-  filter:drop-shadow(0 0 20px rgba(0,229,255,.35));
-}
-.tagline{
-  color:var(--muted);font-size:.98rem;
-  letter-spacing:1px;font-weight:500;
-}
 
-.hero{padding:70px 0 50px;text-align:center;position:relative}
+.hero{padding:60px 0 48px;text-align:center;position:relative}
 .hero h1{
-  font-size:clamp(1.6rem,4vw,2.1rem);
-  margin-bottom:16px;font-weight:800;
+  font-size:clamp(1.55rem,4vw,2.05rem);
+  margin-bottom:14px;font-weight:800;
   background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
   letter-spacing:-.02em;
 }
 .hero p{
-  color:var(--muted);font-size:1.1rem;
-  max-width:540px;margin:0 auto 32px;font-weight:400;
+  color:var(--muted);font-size:1.08rem;
+  max-width:540px;margin:0 auto 28px;font-weight:400;
 }
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -296,11 +318,12 @@ footer{
 .power{color:#ffd166}
 
 @media(max-width:600px){
-  .logo-img{max-width:170px}
-  .hero{padding:48px 0 36px}
-  .hero h1{font-size:1.4rem}
+  .logo-img{width:56px;height:56px}
+  .logo-text .brand{font-size:1.1rem}
+  .hero{padding:44px 0 32px}
+  .hero h1{font-size:1.35rem}
   .btn-secondary{margin-left:0;margin-top:12px}
-  .top-nav a{font-size:.8rem;padding:8px 14px}
+  .top-nav a{font-size:.8rem;padding:7px 12px}
   .cards{grid-template-columns:1fr 1fr;gap:12px}
   .top-banner{font-size:.78rem;padding:10px 12px;line-height:1.45}
 }
@@ -314,13 +337,18 @@ footer{
 
 <header>
 <div class="container">
+<div class="logo-wrap">
+<img src="logo.jpg" alt="CNR Tech" class="logo-img" width="72" height="72">
+<div class="logo-text">
+<div class="brand">CNR Tech</div>
+<div class="tagline">PC Parça · Aksesuar · Bakım</div>
+</div>
+</div>
 <div class="top-nav">
 <a href="ai.html" class="ai">🤖 CNR AI</a>
 <a href="telefon.html">📱 Telefon Test</a>
 <a href="#araclar">🛠️ PC Testler</a>
 </div>
-<img src="logo.jpg" alt="CNR Tech" class="logo-img">
-<div class="tagline">PC Parça · Aksesuar · Bakım · Test</div>
 </div>
 </header>
 
