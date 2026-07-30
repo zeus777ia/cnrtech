@@ -28,7 +28,7 @@ header{padding:40px 0 20px;text-align:center;border-bottom:1px solid rgba(0,180,
 .card h3{color:#00b4ff;margin-bottom:8px;font-size:1.05rem}
 .card p{color:#9bb4c9;font-size:.88rem}
 .tools-section{margin:50px 0 20px;padding:30px 20px;background:rgba(0,40,60,.25);border:1px solid rgba(0,180,255,.2);border-radius:20px}
-.tool-btn{display:block;width:100%;margin:10px 0;padding:16px;background:rgba(0,180,255,.12);border:1px solid rgba(0,180,255,.35);border-radius:12px;color:#7dd3ff;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s}
+.tool-btn{display:block;width:100%;margin:10px 0;padding:16px;background:rgba(0,180,255,.12);border:1px solid rgba(0,180,255,.35);border-radius:12px;color:#7dd3ff;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;text-align:center}
 .tool-btn:hover{background:rgba(0,180,255,.25);color:#fff}
 .mumira-box{margin-top:50px;padding:40px 22px 30px;background:linear-gradient(180deg,#1a1410 0%,#14100c 100%);border-radius:22px;border:1px solid #3a2e24}
 .mumira-box .section-title{color:#f0d5b0;margin-top:0}
@@ -85,10 +85,11 @@ footer{text-align:center;padding:30px 0;color:#4a5a6a;font-size:.9rem;border-top
 <section class="container" id="araclar">
 <div class="tools-section">
 <div class="section-title" style="margin-top:0">Test <span>Araçları</span></div>
-<p style="text-align:center;color:#9bb4c9;margin-bottom:18px;font-size:.95rem">Tarayıcında çalışan ücretsiz araçlar. Monitör ve sistemini test et.</p>
+<p style="text-align:center;color:#9bb4c9;margin-bottom:18px;font-size:.95rem">Tarayıcında çalışan ücretsiz araçlar. Monitör, PC ve telefonunu test et.</p>
 <button class="tool-btn" onclick="startDeadPixel()">🖥️ Ölü / Stuck Piksel Testi</button>
 <button class="tool-btn" onclick="startCpuTest()">⚡ CPU Stress Test</button>
 <button class="tool-btn" onclick="startGpuTest()">🎮 GPU Stress Test</button>
+<a href="telefon.html" class="tool-btn" style="background:rgba(0,180,255,.2)">📱 Telefon Test Araçları →</a>
 </div>
 </section>
 
@@ -158,9 +159,7 @@ function nextDeadColor(){deadIndex=(deadIndex+1)%deadColors.length;document.getE
 function closeDeadPixel(){document.getElementById('deadPixelOverlay').style.display='none';document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(document.getElementById('deadPixelOverlay').style.display==='flex'){if(e.key==='Escape')closeDeadPixel();else nextDeadColor()}});
 
-// Gerçekçi asymptotic formül: yavaş yükselip belirli değerde dengelenir
 function realisticTemp(base, max, sec) {
-  // 1 - e^(-k*t) formülü
   const k = 0.045;
   return base + (max - base) * (1 - Math.exp(-k * sec)) + (Math.random() * 0.8 - 0.4);
 }
@@ -169,7 +168,6 @@ function realisticPower(base, max, sec) {
   return base + (max - base) * (1 - Math.exp(-k * sec)) + (Math.random() * 2 - 1);
 }
 
-// CPU
 let cpuRunning=false,cpuStart=0,cpuTimer,cpuOps=0,cpuLastOps=0;
 function startCpuTest(){
   document.getElementById('cpuOverlay').style.display='flex';
@@ -180,7 +178,6 @@ function startCpuTest(){
   document.getElementById('cpuScore').textContent='0';
   document.getElementById('cpuTemp').textContent='42°C';
   document.getElementById('cpuPower').textContent='38W';
-
   cpuTimer=setInterval(()=>{
     const sec=Math.floor((Date.now()-cpuStart)/1000);
     document.getElementById('cpuTime').textContent=sec+' sn';
@@ -188,16 +185,9 @@ function startCpuTest(){
     cpuLastOps=cpuOps;
     document.getElementById('cpuOps').textContent=opsPerSec.toLocaleString();
     document.getElementById('cpuScore').textContent=Math.floor(cpuOps/1000).toLocaleString();
-
-    // CPU: 42°C → max ~72°C (tipik soğutmalı sistem)
-    const temp = realisticTemp(42, 72, sec);
-    document.getElementById('cpuTemp').textContent = temp.toFixed(1) + '°C';
-
-    // CPU güç: 38W → max ~78W
-    const power = realisticPower(38, 78, sec);
-    document.getElementById('cpuPower').textContent = Math.round(power) + 'W';
+    document.getElementById('cpuTemp').textContent = realisticTemp(42, 72, sec).toFixed(1) + '°C';
+    document.getElementById('cpuPower').textContent = Math.round(realisticPower(38, 78, sec)) + 'W';
   },1000);
-
   function burn(){
     if(!cpuRunning)return;
     let x=0;
@@ -222,7 +212,6 @@ function stopCpuTest(){
   document.body.style.overflow='';
 }
 
-// GPU
 let gpuRunning=false,gpuStart=0,gpuTimer,gpuAnim,gpuFrames=0,gpuLastFrames=0;
 function startGpuTest(){
   const overlay=document.getElementById('gpuOverlay');
@@ -238,28 +227,19 @@ function startGpuTest(){
   document.getElementById('gpuParticles').textContent='900';
   document.getElementById('gpuTemp').textContent='48°C';
   document.getElementById('gpuPower').textContent='68W';
-
   gpuTimer=setInterval(()=>{
     const sec=Math.floor((Date.now()-gpuStart)/1000);
     document.getElementById('gpuTime').textContent=sec+' sn';
     const fps=gpuFrames-gpuLastFrames;
     gpuLastFrames=gpuFrames;
     document.getElementById('gpuFps').textContent=fps;
-
-    // GPU: 48°C → max ~76°C (canvas yükü için gerçekçi)
-    const temp = realisticTemp(48, 76, sec);
-    document.getElementById('gpuTemp').textContent = temp.toFixed(1) + '°C';
-
-    // GPU güç: 68W → max ~125W
-    const power = realisticPower(68, 125, sec);
-    document.getElementById('gpuPower').textContent = Math.round(power) + 'W';
+    document.getElementById('gpuTemp').textContent = realisticTemp(48, 76, sec).toFixed(1) + '°C';
+    document.getElementById('gpuPower').textContent = Math.round(realisticPower(68, 125, sec)) + 'W';
   },1000);
-
   const particles=[];
   for(let i=0;i<900;i++){
     particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*12,vy:(Math.random()-0.5)*12,r:1.5+Math.random()*5,hue:Math.random()*360});
   }
-
   function draw(){
     if(!gpuRunning)return;
     gpuFrames++;
