@@ -27,7 +27,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 header{padding:14px 0 16px;text-align:center;border-bottom:1px solid var(--border);backdrop-filter:blur(14px);background:rgba(6,10,20,.75);position:sticky;top:0;z-index:100;animation:borderPulse 4s ease-in-out infinite;transition:background .35s,box-shadow .35s}
 header.scrolled{background:rgba(6,10,20,.94);box-shadow:0 10px 36px rgba(0,0,0,.45)}
 .logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
-.logo-img{width:72px;height:72px;object-fit:contain;border-radius:14px;display:block;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);padding:4px;animation:logoIn .75s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .75s infinite;transition:transform .35s;cursor:pointer}
+.logo-img{width:72px;height:72px;object-fit:contain;border-radius:16px;display:block;background:transparent;border:none;padding:0;animation:logoIn .75s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .75s infinite;transition:transform .35s;cursor:pointer}
 .logo-img:hover{transform:scale(1.14) rotate(-4deg);animation-play-state:paused;box-shadow:0 0 36px rgba(0,229,255,.75)}
 .logo-text{text-align:left}
 .logo-text .brand{font-size:1.25rem;font-weight:800;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;animation:brandIn .55s ease .28s both}
@@ -96,7 +96,7 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 6px}
 <header id="mainHeader">
 <div class="container">
 <div class="logo-wrap">
-<img src="logo.jpg" alt="CNR Tech" class="logo-img" width="72" height="72">
+<img src="logo.svg" alt="CNR Tech" class="logo-img" width="72" height="72">
 <div class="logo-text"><div class="brand">CNR Tech</div><div class="tagline">PC Parça · Aksesuar · Bakım</div></div>
 </div>
 <div class="top-nav">
