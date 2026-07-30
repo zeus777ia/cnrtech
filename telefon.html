@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Telefon Test Araçları | CNR Tech</title>
+<meta name="description" content="Ücretsiz telefon test araçları: dokunmatik, ekran, sensör, titreşim ve yenileme hızı testi.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#05080f;color:#eee;line-height:1.5;min-height:100vh;background-image:radial-gradient(ellipse at 30% 10%,rgba(0,180,255,.07) 0%,transparent 50%),linear-gradient(180deg,#05080f,#0a0f1a)}
+.container{max-width:520px;margin:0 auto;padding:0 16px}
+header{padding:28px 0 16px;text-align:center;border-bottom:1px solid rgba(0,180,255,.12)}
+header a{color:#7dd3ff;text-decoration:none;font-size:.9rem}
+header h1{font-size:1.4rem;margin:10px 0 4px;color:#fff}
+header p{color:#7a9bb8;font-size:.9rem}
+.tool{background:rgba(10,18,30,.9);border:1px solid rgba(0,180,255,.18);border-radius:16px;padding:18px;margin:16px 0}
+.tool h2{font-size:1.05rem;color:#00b4ff;margin-bottom:6px}
+.tool p{color:#9bb4c9;font-size:.85rem;margin-bottom:12px}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:12px;font-weight:600;font-size:.95rem;cursor:pointer;background:rgba(0,180,255,.15);color:#7dd3ff;border:1px solid rgba(0,180,255,.35);margin-top:8px}
+.btn:active{background:rgba(0,180,255,.3)}
+.btn-run{background:#00b4ff;color:#000;border:none}
+.btn-run:active{background:#33c4ff}
+#touchArea{height:220px;background:#0a1220;border-radius:12px;border:1px dashed rgba(0,180,255,.3);position:relative;overflow:hidden;touch-action:none}
+.touch-dot{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(0,180,255,.5);border:2px solid #00b4ff;transform:translate(-50%,-50%);pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff}
+#sensorBox{font-family:monospace;font-size:.85rem;background:#0a1220;padding:12px;border-radius:10px;line-height:1.7;color:#9bb4c9}
+#sensorBox span{color:#00b4ff;font-weight:600}
+#refreshResult{font-size:1.8rem;font-weight:700;color:#00b4ff;text-align:center;padding:12px 0}
+footer{text-align:center;padding:30px 0 40px;color:#4a5a6a;font-size:.8rem}
+/* overlays */
+#fullOverlay{display:none;position:fixed;inset:0;z-index:9999;background:#000;color:#fff}
+#fullOverlay .info{position:absolute;top:16px;left:0;right:0;text-align:center;font-size:.85rem;opacity:.7;padding:0 12px}
+#fullOverlay .close-btn{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 28px;border:none;border-radius:30px;background:#00b4ff;color:#000;font-weight:700;font-size:1rem}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<a href="index.html">← Ana Sayfa</a>
+<h1>📱 Telefon Test Araçları</h1>
+<p>Ücretsiz • Anında • Kurulum yok</p>
+</div>
+</header>
+
+<div class="container">
+
+<!-- 1. DOKUNMATİK -->
+<div class="tool">
+<h2>👆 Dokunmatik Test</h2>
+<p>Ekrana birden fazla parmakla dokun. Kaç nokta algıladığını ve hassasiyeti gör.</p>
+<div id="touchArea"></div>
+<p style="margin-top:8px;font-size:.8rem;color:#7a9bb8">Algılanan nokta: <strong id="touchCount" style="color:#00b4ff">0</strong></p>
+</div>
+
+<!-- 2. EKRAN -->
+<div class="tool">
+<h2>🖥️ Ekran & Ölü Piksel Testi</h2>
+<p>Tam ekran renklerle ölü/stuck piksel kontrolü. Telefonunu çevirip dikkatli bak.</p>
+<button class="btn btn-run" onclick="startScreenTest()">Ekran Testini Başlat</button>
+</div>
+
+<!-- 3. SENSÖR -->
+<div class="tool">
+<h2>📐 Sensör Testi (Jiroskop / İvmeölçer)</h2>
+<p>Telefonu hareket ettir, eğ, salla. Canlı sensör verilerini izle.</p>
+<div id="sensorBox">
+X: <span id="sX">—</span><br>
+Y: <span id="sY">—</span><br>
+Z: <span id="sZ">—</span><br>
+Alpha: <span id="sA">—</span> | Beta: <span id="sB">—</span> | Gamma: <span id="sG">—</span>
+</div>
+<button class="btn" id="sensorBtn" onclick="toggleSensor()">Sensörü Başlat</button>
+</div>
+
+<!-- 4. TİTREŞİM -->
+<div class="tool">
+<h2>📳 Titreşim Testi</h2>
+<p>Telefonunun titreşim motorunu test et. Farklı modellerde farklı hissedersin.</p>
+<button class="btn" onclick="vibrateShort()">Kısa Titreşim</button>
+<button class="btn" onclick="vibrateLong()">Uzun Titreşim</button>
+<button class="btn" onclick="vibratePattern()">Desenli Titreşim</button>
+</div>
+
+<!-- 5. YENİLEME HIZI -->
+<div class="tool">
+<h2>⚡ Ekran Yenileme Hızı</h2>
+<p>Tarayıcı üzerinden yaklaşık Hz değerini ölçer (60 / 90 / 120 Hz tespiti).</p>
+<div id="refreshResult">— Hz</div>
+<button class="btn btn-run" onclick="measureRefresh()">Ölçümü Başlat</button>
+</div>
+
+<!-- 6. PİL -->
+<div class="tool">
+<h2>🔋 Pil Bilgisi</h2>
+<p>Destekleyen tarayıcılarda pil seviyesi ve şarj durumu.</p>
+<div id="batteryInfo" style="font-size:.95rem;color:#9bb4c9;padding:8px 0">Kontrol ediliyor...</div>
+</div>
+
+</div>
+
+<footer>
+CNR Tech • cnrtech.com.tr<br>
+Bu araçlar tarayıcı API'lerini kullanır. Sonuçlar yaklaşık değerlerdir.
+</footer>
+
+<!-- FULLSCREEN SCREEN TEST -->
+<div id="fullOverlay">
+<div class="info">Ekrana dokun → sonraki renk • Sağ üstten kapat</div>
+<button class="close-btn" onclick="closeScreenTest()">Kapat</button>
+</div>
+
+<script>
+// ===== DOKUNMATİK =====
+const touchArea = document.getElementById('touchArea');
+const touchCount = document.getElementById('touchCount');
+const dots = new Map();
+
+function updateDots(e){
+  e.preventDefault();
+  // mevcut noktaları temizle
+  dots.forEach(d => d.remove());
+  dots.clear();
+  const touches = e.touches || [];
+  touchCount.textContent = touches.length;
+  for(let i=0;i<touches.length;i++){
+    const t = touches[i];
+    const rect = touchArea.getBoundingClientRect();
+    const x = t.clientX - rect.left;
+    const y = t.clientY - rect.top;
+    const el = document.createElement('div');
+    el.className = 'touch-dot';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.textContent = i+1;
+    touchArea.appendChild(el);
+    dots.set(t.identifier, el);
+  }
+}
+touchArea.addEventListener('touchstart', updateDots, {passive:false});
+touchArea.addEventListener('touchmove', updateDots, {passive:false});
+touchArea.addEventListener('touchend', updateDots, {passive:false});
+touchArea.addEventListener('touchcancel', updateDots, {passive:false});
+
+// ===== EKRAN TESTİ =====
+const screenColors = ['#000000','#FFFFFF','#FF0000','#00FF00','#0000FF','#FFFF00','#FF00FF','#00FFFF','#808080'];
+let screenIdx = 0;
+function startScreenTest(){
+  const el = document.getElementById('fullOverlay');
+  el.style.display = 'block';
+  el.style.background = screenColors[0];
+  screenIdx = 0;
+  document.body.style.overflow = 'hidden';
+}
+function nextScreenColor(){
+  screenIdx = (screenIdx + 1) % screenColors.length;
+  document.getElementById('fullOverlay').style.background = screenColors[screenIdx];
+}
+function closeScreenTest(){
+  document.getElementById('fullOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('fullOverlay').addEventListener('click', e => {
+  if(e.target.classList.contains('close-btn')) return;
+  nextScreenColor();
+});
+
+// ===== SENSÖR =====
+let sensorActive = false;
+function toggleSensor(){
+  if(sensorActive){
+    window.removeEventListener('devicemotion', onMotion);
+    window.removeEventListener('deviceorientation', onOrient);
+    sensorActive = false;
+    document.getElementById('sensorBtn').textContent = 'Sensörü Başlat';
+    return;
+  }
+  // iOS 13+ permission
+  if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
+    DeviceMotionEvent.requestPermission().then(r => {
+      if(r === 'granted') startSensor();
+      else alert('Sensör izni gerekli');
+    }).catch(() => alert('Bu cihazda desteklenmiyor'));
+  } else {
+    startSensor();
+  }
+}
+function startSensor(){
+  sensorActive = true;
+  document.getElementById('sensorBtn').textContent = 'Sensörü Durdur';
+  window.addEventListener('devicemotion', onMotion);
+  window.addEventListener('deviceorientation', onOrient);
+}
+function onMotion(e){
+  const a = e.accelerationIncludingGravity || e.acceleration || {};
+  document.getElementById('sX').textContent = (a.x||0).toFixed(2);
+  document.getElementById('sY').textContent = (a.y||0).toFixed(2);
+  document.getElementById('sZ').textContent = (a.z||0).toFixed(2);
+}
+function onOrient(e){
+  document.getElementById('sA').textContent = (e.alpha||0).toFixed(1);
+  document.getElementById('sB').textContent = (e.beta||0).toFixed(1);
+  document.getElementById('sG').textContent = (e.gamma||0).toFixed(1);
+}
+
+// ===== TİTREŞİM =====
+function vibrateShort(){ if(navigator.vibrate) navigator.vibrate(80); else alert('Bu cihaz titreşimi desteklemiyor'); }
+function vibrateLong(){ if(navigator.vibrate) navigator.vibrate(400); else alert('Bu cihaz titreşimi desteklemiyor'); }
+function vibratePattern(){ if(navigator.vibrate) navigator.vibrate([100,50,100,50,200,100,400]); else alert('Bu cihaz titreşimi desteklemiyor'); }
+
+// ===== YENİLEME HIZI =====
+function measureRefresh(){
+  const result = document.getElementById('refreshResult');
+  result.textContent = 'Ölçülüyor...';
+  let frames = 0;
+  const start = performance.now();
+  function tick(now){
+    frames++;
+    if(now - start < 1000){
+      requestAnimationFrame(tick);
+    } else {
+      const hz = Math.round(frames * 1000 / (now - start));
+      // en yakın standart değere yuvarla
+      let display = hz;
+      if(hz > 110) display = 120;
+      else if(hz > 80) display = 90;
+      else if(hz > 50) display = 60;
+      else display = hz;
+      result.textContent = display + ' Hz';
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== PİL =====
+if(navigator.getBattery){
+  navigator.getBattery().then(b => {
+    function update(){
+      const level = Math.round(b.level * 100);
+      const charging = b.charging ? 'Şarj oluyor ⚡' : 'Şarj olmuyor';
+      document.getElementById('batteryInfo').innerHTML = `Seviye: <strong style="color:#00b4ff">%${level}</strong><br>${charging}`;
+    }
+    update();
+    b.addEventListener('levelchange', update);
+    b.addEventListener('chargingchange', update);
+  });
+} else {
+  document.getElementById('batteryInfo').textContent = 'Bu tarayıcı pil bilgisini desteklemiyor.';
+}
+</script>
+</body>
+</html>
