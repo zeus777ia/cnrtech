@@ -12,336 +12,134 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#060a14;--card:rgba(12,20,38,.82);--cyan:#00e5ff;--violet:#7c5cff;
-  --text:#e8f0ff;--muted:#8ba3c7;--border:rgba(0,229,255,.18);--amber:#e8a05a;
-  --safe-b:env(safe-area-inset-bottom,0px);
-}
+:root{--bg:#060a14;--card:rgba(12,20,38,.82);--cyan:#00e5ff;--violet:#7c5cff;--text:#e8f0ff;--muted:#8ba3c7;--border:rgba(0,229,255,.18);--amber:#e8a05a;--safe-b:env(safe-area-inset-bottom,0px)}
 html{scroll-behavior:smooth}
-body{
-  font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--text);
-  line-height:1.65;min-height:100vh;overflow-x:hidden;
-}
-body::before{
-  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:
-    radial-gradient(ellipse 80% 50% at 10% -10%,rgba(0,229,255,.12),transparent 50%),
-    radial-gradient(ellipse 60% 40% at 90% 20%,rgba(124,92,255,.1),transparent 45%),
-    linear-gradient(180deg,#060a14 0%,#0a1020 50%,#080e1a 100%);
-}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(0,229,255,.12),transparent 50%),radial-gradient(ellipse 60% 40% at 90% 20%,rgba(124,92,255,.1),transparent 45%),linear-gradient(180deg,#060a14 0%,#0a1020 50%,#080e1a 100%)}
 .container{width:100%;margin:0 auto;padding:0 20px}
-
-/* ===== ORTAK ===== */
 @keyframes logoIn{0%{opacity:0;transform:scale(.55)}100%{opacity:1;transform:scale(1)}}
 @keyframes logoGlow{0%,100%{box-shadow:0 0 12px rgba(0,229,255,.3)}50%{box-shadow:0 0 28px rgba(0,229,255,.55)}}
 @keyframes bannerShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
-.top-banner{
-  background:linear-gradient(90deg,rgba(0,229,255,.14),rgba(124,92,255,.18),rgba(0,229,255,.14));
-  background-size:200% 100%;animation:bannerShimmer 7s ease infinite;
-  border-bottom:1px solid rgba(0,229,255,.22);text-align:center;
-  padding:10px 14px;font-size:.85rem;font-weight:500;color:#c8e6f5;
-}
-.top-banner strong{
-  background:linear-gradient(90deg,var(--cyan),#a78bfa);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;
-}
-
-header{
-  backdrop-filter:blur(16px);background:rgba(6,10,20,.82);
-  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;
-  transition:background .3s,box-shadow .3s;
-}
+.top-banner{background:linear-gradient(90deg,rgba(0,229,255,.14),rgba(124,92,255,.18),rgba(0,229,255,.14));background-size:200% 100%;animation:bannerShimmer 7s ease infinite;border-bottom:1px solid rgba(0,229,255,.22);text-align:center;padding:10px 14px;font-size:.85rem;font-weight:500;color:#c8e6f5}
+.top-banner strong{background:linear-gradient(90deg,var(--cyan),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+header{backdrop-filter:blur(16px);background:rgba(6,10,20,.82);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;transition:background .3s,box-shadow .3s}
 header.scrolled{background:rgba(6,10,20,.96);box-shadow:0 8px 28px rgba(0,0,0,.4)}
-
-.logo-img{
-  object-fit:contain;border-radius:14px;display:block;
-  animation:logoIn .7s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .7s infinite;
-}
-.logo-text .brand{
-  font-weight:800;background:linear-gradient(90deg,#fff,var(--cyan));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;
-}
+.logo-img{object-fit:contain;border-radius:14px;display:block;animation:logoIn .7s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .7s infinite}
+.logo-text .brand{font-weight:800;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15}
 .logo-text .tagline{color:var(--muted);font-weight:500}
-
-.nav-link{
-  display:inline-flex;align-items:center;justify-content:center;gap:5px;
-  text-decoration:none;font-weight:600;color:var(--cyan);
-  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);
-  transition:all .25s;
-}
+.nav-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;font-weight:600;color:var(--cyan);background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);transition:all .25s}
 .nav-link:hover,.nav-link:active{background:rgba(0,229,255,.2);color:#fff}
 .nav-link.ai{background:linear-gradient(135deg,rgba(0,229,255,.18),rgba(124,92,255,.2));border-color:rgba(0,229,255,.4);color:#fff}
-
-.visitor-chip{
-  display:inline-flex;align-items:center;gap:7px;
-  border-radius:999px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);
-  color:var(--muted);font-size:.8rem;
-}
+.nav-link.fiyat{background:linear-gradient(135deg,rgba(232,160,90,.2),rgba(232,160,90,.12));border-color:rgba(232,160,90,.45);color:#f0c878}
+.visitor-chip{display:inline-flex;align-items:center;gap:7px;border-radius:999px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);color:var(--muted);font-size:.8rem}
 .visitor-chip strong{color:var(--cyan);font-weight:700;font-variant-numeric:tabular-nums}
 .visitor-chip .dot{width:7px;height:7px;border-radius:50%;background:#25D366;box-shadow:0 0 8px #25D366;flex-shrink:0}
-
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  border-radius:999px;font-weight:700;text-decoration:none;border:none;cursor:pointer;
-  transition:all .25s;font-family:inherit;
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all .25s;font-family:inherit}
 .btn-primary{background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018;box-shadow:0 4px 24px rgba(0,229,255,.35)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,229,255,.5)}
 .btn-secondary{background:transparent;border:1.5px solid rgba(0,229,255,.4);color:var(--cyan)}
 .btn-secondary:hover{background:rgba(0,229,255,.1)}
+.btn-fiyat{background:linear-gradient(135deg,#e8a05a,#d4894a);color:#1a1008;box-shadow:0 4px 24px rgba(232,160,90,.35)}
+.btn-fiyat:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,160,90,.5)}
 .btn-amber{background:linear-gradient(135deg,#e8a05a,#d4894a);color:#1a1008;box-shadow:0 4px 24px rgba(232,160,90,.3)}
-
 .section-title{text-align:center;font-weight:800}
-.section-title span{
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.card{
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  backdrop-filter:blur(10px);transition:all .3s;
-}
+.section-title span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(10px);transition:all .3s}
 .card:hover{border-color:rgba(0,229,255,.4);transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.3)}
-.card h3{color:var(--cyan);font-weight:700}
-.card p{color:var(--muted);line-height:1.5}
-
-.tools-section{
-  background:linear-gradient(160deg,rgba(0,40,70,.3),rgba(40,20,80,.2));
-  border:1px solid rgba(0,229,255,.22);border-radius:20px;
-}
-.tool-btn{
-  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
-  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);
-  border-radius:14px;color:var(--cyan);font-weight:600;cursor:pointer;
-  transition:all .25s;text-decoration:none;text-align:center;font-family:inherit;
-}
+.card h3{color:var(--cyan);font-weight:700}.card p{color:var(--muted);line-height:1.5}
+.tools-section{background:linear-gradient(160deg,rgba(0,40,70,.3),rgba(40,20,80,.2));border:1px solid rgba(0,229,255,.22);border-radius:20px}
+.tool-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);border-radius:14px;color:var(--cyan);font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;text-align:center;font-family:inherit}
 .tool-btn:hover{background:rgba(0,229,255,.18);color:#fff;border-color:var(--cyan)}
 .tool-btn.ai{background:rgba(124,92,255,.15);border-color:rgba(124,92,255,.4);color:#c4b5ff}
-.disclaimer{color:#6a7f99;text-align:center;line-height:1.5}
-.disclaimer a{color:var(--cyan)}
-
-.mumira-box{
-  background:linear-gradient(165deg,#1c1610,#14100c);border-radius:22px;
-  border:1px solid rgba(232,160,90,.25);text-align:center;
-}
+.disclaimer{color:#6a7f99;text-align:center;line-height:1.5}.disclaimer a{color:var(--cyan)}
+.mumira-box{background:linear-gradient(165deg,#1c1610,#14100c);border-radius:22px;border:1px solid rgba(232,160,90,.25);text-align:center}
 .mumira-box .section-title{color:#f5e0c8}
-.mumira-box .section-title span{
-  background:linear-gradient(90deg,#e8a05a,#f0c878);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
+.mumira-box .section-title span{background:linear-gradient(90deg,#e8a05a,#f0c878);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .mumira-box .card{background:rgba(34,26,18,.9);border-color:rgba(232,160,90,.2);text-decoration:none;display:block;color:inherit;text-align:left}
 .mumira-box .card h3{color:#e8c39e}.mumira-box .card p{color:#a89078}
-
-.contact{
-  background:var(--card);border-radius:20px;text-align:center;
-  border:1px solid var(--border);position:relative;overflow:hidden;
-}
+.contact{background:var(--card);border-radius:20px;text-align:center;border:1px solid var(--border);position:relative;overflow:hidden}
 .contact::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--amber))}
 .email{color:var(--muted)}
+.contact-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 footer{text-align:center;color:#4a5a72;border-top:1px solid rgba(0,229,255,.1)}
-footer a{color:var(--cyan);text-decoration:none;margin:0 5px}
-.legal-links{line-height:2}
-
-/* sticky mobil alt menü — masaüstünde gizli */
+footer a{color:var(--cyan);text-decoration:none;margin:0 5px}.legal-links{line-height:2}
 .m-bottom-nav{display:none}
-
-#cookieBar{
-  display:none;position:fixed;left:0;right:0;z-index:10001;
-  background:rgba(8,14,28,.97);border-top:1px solid rgba(0,229,255,.3);
-  backdrop-filter:blur(12px);box-shadow:0 -8px 32px rgba(0,0,0,.4);
-}
+#cookieBar{display:none;position:fixed;left:0;right:0;z-index:10001;background:rgba(8,14,28,.97);border-top:1px solid rgba(0,229,255,.3);backdrop-filter:blur(12px);box-shadow:0 -8px 32px rgba(0,0,0,.4)}
 #cookieBar .inner{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between}
 #cookieBar p{flex:1;min-width:180px;color:#b8cce0;margin:0;line-height:1.45}
-#cookieBar a{color:var(--cyan)}
-#cookieBar .actions{display:flex;gap:8px;flex-wrap:wrap}
-#cookieBar button{
-  padding:10px 16px;border-radius:999px;font-weight:700;font-size:.85rem;
-  cursor:pointer;border:none;font-family:inherit;
-}
+#cookieBar a{color:var(--cyan)}#cookieBar .actions{display:flex;gap:8px;flex-wrap:wrap}
+#cookieBar button{padding:10px 16px;border-radius:999px;font-weight:700;font-size:.85rem;cursor:pointer;border:none;font-family:inherit}
 #cookieBar .accept{background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018}
 #cookieBar .reject{background:transparent;border:1px solid rgba(0,229,255,.35);color:var(--cyan)}
-
-#deadPixelOverlay,#cpuOverlay,#gpuOverlay{
-  display:none;position:fixed;inset:0;z-index:9999;background:#000;color:#fff;
-  flex-direction:column;align-items:center;justify-content:center;
-}
+#deadPixelOverlay,#cpuOverlay,#gpuOverlay{display:none;position:fixed;inset:0;z-index:9999;background:#000;color:#fff;flex-direction:column;align-items:center;justify-content:center}
 #deadPixelOverlay{cursor:pointer}
 .test-controls{position:fixed;bottom:calc(24px + var(--safe-b));left:50%;transform:translateX(-50%);z-index:10000}
-.test-controls button{
-  padding:14px 28px;border:none;border-radius:999px;font-weight:700;cursor:pointer;
-  background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018;font-size:1rem;font-family:inherit;
-}
-.stats-box{
-  background:rgba(6,10,20,.9);padding:18px 22px;border-radius:16px;
-  border:1px solid rgba(0,229,255,.35);text-align:center;min-width:260px;backdrop-filter:blur(16px);
-}
+.test-controls button{padding:14px 28px;border:none;border-radius:999px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018;font-size:1rem;font-family:inherit}
+.stats-box{background:rgba(6,10,20,.9);padding:18px 22px;border-radius:16px;border:1px solid rgba(0,229,255,.35);text-align:center;min-width:260px;backdrop-filter:blur(16px)}
 .stats-box h2{font-size:1.1rem;margin-bottom:10px;color:var(--cyan);font-weight:700}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
 .stats-box .val{font-size:1.3rem;font-weight:800}.stats-box .label{font-size:.75rem;color:#8899aa}
 .temp-hot{color:#ff7a5c}.power{color:#ffd166}
-
-/* ========== MASAÜSTÜ (≥901px) ========== */
 @media (min-width:901px){
-  .container{max-width:1100px;padding:0 28px}
-  .top-banner{font-size:.9rem;padding:11px 20px}
-
-  header .header-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    gap:20px;padding:14px 0;min-height:76px;
-  }
-  .logo-wrap{display:flex;align-items:center;gap:12px;flex-shrink:0}
-  .logo-img{width:64px;height:64px}
-  .logo-text .brand{font-size:1.3rem}
-  .logo-text .tagline{font-size:.8rem;margin-top:2px}
-
-  .desktop-nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
-  .desktop-nav .nav-link{padding:9px 18px;border-radius:999px;font-size:.9rem}
-  .visitor-chip{padding:7px 14px;margin:0}
-  .m-only{display:none!important}
-
+  .container{max-width:1100px;padding:0 28px}.top-banner{font-size:.9rem;padding:11px 20px}
+  header .header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0;min-height:76px}
+  .logo-wrap{display:flex;align-items:center;gap:12px;flex-shrink:0}.logo-img{width:64px;height:64px}
+  .logo-text .brand{font-size:1.3rem}.logo-text .tagline{font-size:.8rem;margin-top:2px}
+  .desktop-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+  .desktop-nav .nav-link{padding:9px 14px;border-radius:999px;font-size:.86rem}
+  .visitor-chip{padding:7px 14px;margin:0}.m-only{display:none!important}
   .hero{padding:72px 0 56px;text-align:center}
-  .hero h1{font-size:2.2rem;margin-bottom:16px;font-weight:800;
-    background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero h1{font-size:2.2rem;margin-bottom:16px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .hero p{font-size:1.1rem;max-width:560px;margin:0 auto 30px;color:var(--muted)}
-  .hero-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
-  .btn{padding:15px 30px;font-size:1rem}
-
+  .hero-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.btn{padding:15px 26px;font-size:1rem}
   .section-title{font-size:1.55rem;margin:56px 0 26px}
-  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  .card{padding:26px 20px}
-  .card h3{font-size:1.1rem;margin-bottom:8px}
-  .card p{font-size:.92rem}
-
-  .tools-section{margin:56px 0 28px;padding:36px 28px}
-  .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .tool-btn{padding:16px;font-size:1rem;margin:0}
-  .disclaimer{font-size:.82rem;margin-top:16px}
-
-  .mumira-box{margin-top:60px;padding:48px 32px 36px}
-  .mumira-box .cards{grid-template-columns:repeat(3,1fr);text-align:left}
-  .btn-amber{margin-top:24px;padding:15px 32px}
-
-  .contact{padding:52px 36px;margin:52px 0 48px}
-  .contact h2{font-size:1.5rem;margin-bottom:8px}
-  .email{margin:14px 0 24px}
-  footer{padding:36px 0 40px;font-size:.88rem}
-  #cookieBar{bottom:0;padding:16px 24px}
-  #cookieBar .inner{max-width:1100px;margin:0 auto}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{padding:26px 20px}.card h3{font-size:1.1rem;margin-bottom:8px}.card p{font-size:.92rem}
+  .tools-section{margin:56px 0 28px;padding:36px 28px}.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tool-btn{padding:16px;font-size:1rem;margin:0}.disclaimer{font-size:.82rem;margin-top:16px}
+  .mumira-box{margin-top:60px;padding:48px 32px 36px}.mumira-box .cards{grid-template-columns:repeat(3,1fr)}.btn-amber{margin-top:24px;padding:15px 32px}
+  .contact{padding:52px 36px;margin:52px 0 48px}.contact h2{font-size:1.5rem;margin-bottom:8px}.email{margin:14px 0 24px}
+  footer{padding:36px 0 40px;font-size:.88rem}#cookieBar{bottom:0;padding:16px 24px}#cookieBar .inner{max-width:1100px;margin:0 auto}
 }
-
-/* ========== MOBİL (≤900px) ========== */
 @media (max-width:900px){
-  body{padding-bottom:calc(72px + var(--safe-b))}
-  .container{padding:0 16px;max-width:100%}
-
+  body{padding-bottom:calc(72px + var(--safe-b))}.container{padding:0 16px;max-width:100%}
   .top-banner{font-size:.72rem;padding:8px 12px;line-height:1.4}
-
-  /* kompakt sticky header */
-  header .header-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:10px 0;gap:10px;
-  }
-  .logo-wrap{display:flex;align-items:center;gap:10px}
-  .logo-img{width:44px;height:44px;border-radius:11px}
-  .logo-text .brand{font-size:1.05rem}
-  .logo-text .tagline{font-size:.7rem;margin-top:1px;display:none}
-  .desktop-nav{display:none!important}
-  .visitor-chip{padding:5px 10px;font-size:.72rem}
-  .visitor-chip .label-full{display:none}
-
-  /* alt sabit menü */
-  .m-bottom-nav{
-    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;
-    background:rgba(6,10,20,.96);backdrop-filter:blur(18px);
-    border-top:1px solid rgba(0,229,255,.25);
-    padding:8px 10px calc(8px + var(--safe-b));
-    justify-content:space-around;align-items:center;gap:4px;
-  }
-  .m-bottom-nav a{
-    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-    text-decoration:none;color:var(--muted);font-size:.68rem;font-weight:600;
-    padding:6px 4px;border-radius:12px;transition:all .2s;
-  }
-  .m-bottom-nav a .ico{font-size:1.25rem;line-height:1}
-  .m-bottom-nav a:active, .m-bottom-nav a:hover{color:var(--cyan);background:rgba(0,229,255,.1)}
-  .m-bottom-nav a.wa{color:#25D366}
-  .m-bottom-nav a.wa:active{background:rgba(37,211,102,.12)}
-
+  header .header-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:10px}
+  .logo-wrap{display:flex;align-items:center;gap:10px}.logo-img{width:44px;height:44px;border-radius:11px}
+  .logo-text .brand{font-size:1.05rem}.logo-text .tagline{display:none}.desktop-nav{display:none!important}
+  .visitor-chip{padding:5px 10px;font-size:.72rem}.visitor-chip .label-full{display:none}
+  .m-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(6,10,20,.96);backdrop-filter:blur(18px);border-top:1px solid rgba(0,229,255,.25);padding:8px 6px calc(8px + var(--safe-b));justify-content:space-around;align-items:center;gap:2px}
+  .m-bottom-nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-size:.65rem;font-weight:600;padding:6px 2px;border-radius:12px;transition:all .2s}
+  .m-bottom-nav a .ico{font-size:1.2rem;line-height:1}.m-bottom-nav a:active,.m-bottom-nav a:hover{color:var(--cyan);background:rgba(0,229,255,.1)}
+  .m-bottom-nav a.fiyat{color:#f0c878}.m-bottom-nav a.wa{color:#25D366}
   .hero{padding:36px 0 28px;text-align:center}
-  .hero h1{
-    font-size:1.4rem;margin-bottom:12px;font-weight:800;line-height:1.25;
-    background:linear-gradient(135deg,#fff 0%,var(--cyan) 55%,var(--violet) 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  }
+  .hero h1{font-size:1.4rem;margin-bottom:12px;font-weight:800;line-height:1.25;background:linear-gradient(135deg,#fff 0%,var(--cyan) 55%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .hero p{font-size:.95rem;color:var(--muted);margin:0 auto 22px;max-width:100%;padding:0 4px}
-  .hero-btns{display:flex;flex-direction:column;gap:10px;width:100%}
-  .hero-btns .btn{width:100%;padding:15px 20px;font-size:.98rem;margin:0}
-
+  .hero-btns{display:flex;flex-direction:column;gap:10px;width:100%}.hero-btns .btn{width:100%;padding:15px 20px;font-size:.98rem;margin:0}
   .section-title{font-size:1.25rem;margin:36px 0 16px}
-  .cards{display:grid;grid-template-columns:1fr;gap:12px}
-  .card{padding:18px 16px;border-radius:14px}
-  .card:hover{transform:none}
-  .card h3{font-size:1rem;margin-bottom:6px}
-  .card p{font-size:.88rem}
-
-  /* hizmetler 2 kolon mobil */
-  .cards.services{grid-template-columns:1fr 1fr;gap:10px}
-  .cards.services .card{padding:14px 12px}
-  .cards.services .card h3{font-size:.92rem}
-  .cards.services .card p{font-size:.78rem;line-height:1.4}
-
-  .tools-section{margin:36px 0 20px;padding:20px 14px;border-radius:16px}
-  .tools-grid{display:flex;flex-direction:column;gap:10px}
-  .tool-btn{padding:15px 12px;font-size:.92rem;min-height:48px}
-  .disclaimer{font-size:.75rem;margin-top:12px;padding:0 4px}
-
-  .mumira-box{margin-top:40px;padding:28px 14px 24px;border-radius:18px}
-  .mumira-box .cards{grid-template-columns:1fr;gap:10px}
-  .btn-amber{width:100%;margin-top:16px;padding:14px 20px}
-
-  .contact{padding:32px 18px;margin:36px 0 24px;border-radius:16px}
-  .contact h2{font-size:1.2rem}
-  .email{margin:10px 0 18px;font-size:.9rem;word-break:break-all}
-  .contact .btn{width:100%}
-
-  footer{padding:24px 0 calc(20px + var(--safe-b));font-size:.8rem}
-  .legal-links{font-size:.78rem;margin:10px 0}
-
-  #cookieBar{bottom:calc(64px + var(--safe-b));padding:12px 14px}
-  #cookieBar p{font-size:.8rem}
-  #cookieBar button{padding:10px 14px;font-size:.8rem;min-height:44px}
-
+  .cards{display:grid;grid-template-columns:1fr;gap:12px}.card{padding:18px 16px;border-radius:14px}.card:hover{transform:none}.card h3{font-size:1rem;margin-bottom:6px}.card p{font-size:.88rem}
+  .cards.services{grid-template-columns:1fr 1fr;gap:10px}.cards.services .card{padding:14px 12px}.cards.services .card h3{font-size:.92rem}.cards.services .card p{font-size:.78rem;line-height:1.4}
+  .tools-section{margin:36px 0 20px;padding:20px 14px;border-radius:16px}.tools-grid{display:flex;flex-direction:column;gap:10px}.tool-btn{padding:15px 12px;font-size:.92rem;min-height:48px}.disclaimer{font-size:.75rem;margin-top:12px;padding:0 4px}
+  .mumira-box{margin-top:40px;padding:28px 14px 24px;border-radius:18px}.mumira-box .cards{grid-template-columns:1fr;gap:10px}.btn-amber{width:100%;margin-top:16px;padding:14px 20px}
+  .contact{padding:32px 18px;margin:36px 0 24px;border-radius:16px}.contact h2{font-size:1.2rem}.email{margin:10px 0 18px;font-size:.9rem;word-break:break-all}.contact-btns{flex-direction:column}.contact-btns .btn{width:100%}
+  footer{padding:24px 0 calc(20px + var(--safe-b));font-size:.8rem}.legal-links{font-size:.78rem;margin:10px 0}
+  #cookieBar{bottom:calc(64px + var(--safe-b));padding:12px 14px}#cookieBar p{font-size:.8rem}#cookieBar button{padding:10px 14px;font-size:.8rem;min-height:44px}
   .stats-box{min-width:0;width:calc(100vw - 40px);max-width:320px}
 }
-
-/* çok dar telefon */
-@media (max-width:380px){
-  .cards.services{grid-template-columns:1fr}
-  .hero h1{font-size:1.25rem}
-  .logo-text .brand{font-size:.95rem}
-}
+@media (max-width:380px){.cards.services{grid-template-columns:1fr}.hero h1{font-size:1.25rem}.logo-text .brand{font-size:.95rem}}
 </style>
 </head>
 <body>
-
-<div class="top-banner">
-<strong>AI destek · AI destekli uygulamalar · Site yönetimi · Tasarım & kodlama</strong> — hepsi tek çatı altında
-</div>
-
+<div class="top-banner"><strong>AI destek · AI destekli uygulamalar · Site yönetimi · Tasarım & kodlama</strong> — hepsi tek çatı altında</div>
 <header id="mainHeader">
 <div class="container header-inner">
   <div class="logo-wrap">
     <img src="logo.svg" alt="CNR Tech" class="logo-img" width="64" height="64">
-    <div class="logo-text">
-      <div class="brand">CNR Tech</div>
-      <div class="tagline">PC Parça · Aksesuar · Bakım</div>
-    </div>
+    <div class="logo-text"><div class="brand">CNR Tech</div><div class="tagline">PC Parça · Aksesuar · Bakım</div></div>
   </div>
   <nav class="desktop-nav" aria-label="Ana menü">
+    <a href="fiyat.html" class="nav-link fiyat">💰 Fiyat Al</a>
     <a href="ai.html" class="nav-link ai">🤖 CNR AI</a>
-    <a href="telefon.html" class="nav-link">📱 Telefon Test</a>
-    <a href="#araclar" class="nav-link">🛠️ PC Testler</a>
+    <a href="telefon.html" class="nav-link">📱 Telefon</a>
+    <a href="#araclar" class="nav-link">🛠️ Testler</a>
   </nav>
   <div class="visitor-chip" title="Her gün gece yarısı (Türkiye saati) sıfırlanır">
     <span class="dot" aria-hidden="true"></span>
@@ -349,18 +147,15 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}
   </div>
 </div>
 </header>
-
-<section class="hero">
-<div class="container">
+<section class="hero"><div class="container">
   <h1>GPU · PC Parça · Aksesuar · Bakım</h1>
   <p>Konya merkezli al-sat ve teknik servis. Temiz ürün, dürüst fiyat. Ücretsiz test araçları ve AI asistan hazır.</p>
   <div class="hero-btns">
-    <a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">WhatsApp ile Yaz</a>
+    <a href="fiyat.html" class="btn btn-fiyat">💰 Fiyat Al</a>
+    <a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">WhatsApp</a>
     <a href="ai.html" class="btn btn-secondary">🤖 CNR AI</a>
   </div>
-</div>
-</section>
-
+</div></section>
 <section class="container">
   <div class="section-title">PC <span>Hizmetleri</span></div>
   <div class="cards services">
@@ -370,7 +165,6 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}
     <div class="card"><h3>🔧 Bakım & Onarım</h3><p>Temizlik, termal macun, format, arıza tespiti ve onarım.</p></div>
   </div>
 </section>
-
 <section class="container" id="araclar">
   <div class="tools-section">
     <div class="section-title" style="margin-top:0">Test <span>Araçları</span></div>
@@ -381,11 +175,11 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}
       <button class="tool-btn" onclick="startGpuTest()">🎮 GPU Stress Test</button>
       <a href="telefon.html" class="tool-btn">📱 Telefon Test Araçları →</a>
       <a href="ai.html" class="tool-btn ai">🤖 CNR AI — Günlük 5 Soru →</a>
+      <a href="fiyat.html" class="tool-btn" style="background:rgba(232,160,90,.12);border-color:rgba(232,160,90,.4);color:#f0c878">💰 Fiyat Al — Görsel Yükle →</a>
     </div>
     <p class="disclaimer">Uyarı: Stress testleri cihazı yorabilir. Sıcaklık/güç değerleri tahmindir. <a href="kullanim.html">Kullanım koşulları</a></p>
   </div>
 </section>
-
 <section class="container" id="mumira">
   <div class="mumira-box">
     <div class="section-title">Mumira <span>El Yapımı Mumlar</span></div>
@@ -397,74 +191,40 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 5px}
     <a href="https://www.shopier.com/mumiraonline" class="btn btn-amber" target="_blank" rel="noopener">🛒 Shopier'de İncele / Satın Al</a>
   </div>
 </section>
-
 <section class="container" id="iletisim">
   <div class="contact">
     <h2>İletişime Geç</h2>
     <p style="color:var(--muted);margin-bottom:6px;font-size:.95rem">PC parça, bakım, test veya mum için yazman yeterli.</p>
     <div class="email">cnrtech@outlook.com.tr</div>
-    <a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">Hemen WhatsApp</a>
-  </div>
-</section>
-
-<footer>
-<div class="container">
-  © 2026 CNR Tech & Mumira · Konya<br>cnrtech.com.tr
-  <div class="legal-links">
-    <a href="gizlilik.html">Gizlilik</a> ·
-    <a href="kvkk.html">KVKK</a> ·
-    <a href="cerez.html">Çerezler</a> ·
-    <a href="kullanim.html">Kullanım</a>
-  </div>
-  <span style="font-size:.72rem;color:#3d4d60">Test ve AI çıktıları bilgilendirme amaçlıdır.</span>
-</div>
-</footer>
-
-<!-- Mobil alt navigasyon -->
-<nav class="m-bottom-nav" aria-label="Mobil menü">
-  <a href="index.html"><span class="ico">🏠</span>Ana</a>
-  <a href="ai.html"><span class="ico">🤖</span>AI</a>
-  <a href="#araclar"><span class="ico">🛠️</span>Test</a>
-  <a href="telefon.html"><span class="ico">📱</span>Telefon</a>
-  <a href="https://wa.me/905332595042" class="wa" target="_blank" rel="noopener"><span class="ico">💬</span>WP</a>
-</nav>
-
-<div id="cookieBar" role="dialog" aria-label="Çerez onayı">
-  <div class="inner">
-    <p>Site; AI limiti için tarayıcı depolaması ve IP kullanabilir. <a href="cerez.html">Çerezler</a> · <a href="kvkk.html">KVKK</a></p>
-    <div class="actions">
-      <button type="button" class="reject" onclick="cookieChoice('reject')">Zorunlu</button>
-      <button type="button" class="accept" onclick="cookieChoice('accept')">Kabul et</button>
+    <div class="contact-btns">
+      <a href="fiyat.html" class="btn btn-fiyat">💰 Fiyat Al</a>
+      <a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">WhatsApp</a>
     </div>
   </div>
-</div>
-
+</section>
+<footer><div class="container">
+  © 2026 CNR Tech & Mumira · Konya<br>cnrtech.com.tr
+  <div class="legal-links"><a href="gizlilik.html">Gizlilik</a> · <a href="kvkk.html">KVKK</a> · <a href="cerez.html">Çerezler</a> · <a href="kullanim.html">Kullanım</a></div>
+  <span style="font-size:.72rem;color:#3d4d60">Test ve AI çıktıları bilgilendirme amaçlıdır.</span>
+</div></footer>
+<nav class="m-bottom-nav" aria-label="Mobil menü">
+  <a href="index.html"><span class="ico">🏠</span>Ana</a>
+  <a href="fiyat.html" class="fiyat"><span class="ico">💰</span>Fiyat</a>
+  <a href="ai.html"><span class="ico">🤖</span>AI</a>
+  <a href="#araclar"><span class="ico">🛠️</span>Test</a>
+  <a href="https://wa.me/905332595042" class="wa" target="_blank" rel="noopener"><span class="ico">💬</span>WP</a>
+</nav>
+<div id="cookieBar" role="dialog" aria-label="Çerez onayı"><div class="inner">
+  <p>Site; AI limiti için tarayıcı depolaması ve IP kullanabilir. <a href="cerez.html">Çerezler</a> · <a href="kvkk.html">KVKK</a></p>
+  <div class="actions"><button type="button" class="reject" onclick="cookieChoice('reject')">Zorunlu</button><button type="button" class="accept" onclick="cookieChoice('accept')">Kabul et</button></div>
+</div></div>
 <div id="deadPixelOverlay" onclick="nextDeadColor()"><div style="position:absolute;top:20px;left:0;right:0;text-align:center;font-size:.9rem;opacity:.7">Tıkla → sonraki renk · ESC çık</div></div>
 <div id="cpuOverlay"><div class="stats-box"><h2>⚡ CPU Stress Test</h2><div class="stats-grid"><div><div class="val" id="cpuTime">0 sn</div><div class="label">Süre</div></div><div><div class="val" id="cpuOps">0</div><div class="label">İşlem/sn</div></div><div><div class="val" id="cpuScore">0</div><div class="label">Skor</div></div><div><div class="val temp-hot" id="cpuTemp">42°C</div><div class="label">Sıcaklık</div></div><div><div class="val power" id="cpuPower">38W</div><div class="label">Güç</div></div></div></div><div class="test-controls"><button onclick="stopCpuTest()">Durdur</button></div></div>
 <div id="gpuOverlay"><canvas id="gpuCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:relative;z-index:2"><div class="stats-box"><h2>🎮 GPU Stress Test</h2><div class="stats-grid"><div><div class="val" id="gpuTime">0 sn</div><div class="label">Süre</div></div><div><div class="val" id="gpuFps">0</div><div class="label">FPS</div></div><div><div class="val" id="gpuParticles">900</div><div class="label">Parçacık</div></div><div><div class="val temp-hot" id="gpuTemp">48°C</div><div class="label">Sıcaklık</div></div><div><div class="val power" id="gpuPower">68W</div><div class="label">Güç</div></div></div></div><div class="test-controls" style="position:relative;transform:none;left:0;margin-top:16px"><button onclick="stopGpuTest()">Durdur</button></div></div></div>
-
 <script>
-(function(){
-  const k='cnr_cookie_ok';
-  if(!localStorage.getItem(k)) document.getElementById('cookieBar').style.display='block';
-  window.cookieChoice=function(v){localStorage.setItem(k,v);document.getElementById('cookieBar').style.display='none'};
-})();
-
-(function(){
-  const el=document.getElementById('visitorCount');if(!el)return;
-  function todayTR(){return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'})}
-  const day=todayTR(),flagKey='cnr_visit_'+day,localKey='cnr_visit_count_'+day,already=localStorage.getItem(flagKey);
-  function show(n){el.textContent=Number(n).toLocaleString('tr-TR')}
-  function localBump(){let n=parseInt(localStorage.getItem(localKey)||'0',10);if(!already){n+=1;localStorage.setItem(localKey,String(n));localStorage.setItem(flagKey,'1')}show(n||1)}
-  const shouldUp=!already;
-  const url=shouldUp?'https://api.counterapi.dev/v1/cnrtech/daily-'+day+'/up':'https://api.counterapi.dev/v1/cnrtech/daily-'+day+'/';
-  fetch(url,{method:'GET',mode:'cors'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
-    const n=(d&&(d.count??d.value))||0;if(shouldUp)localStorage.setItem(flagKey,'1');show(n);localStorage.setItem(localKey,String(n));
-  }).catch(localBump);
-})();
-
+(function(){const k='cnr_cookie_ok';if(!localStorage.getItem(k))document.getElementById('cookieBar').style.display='block';window.cookieChoice=function(v){localStorage.setItem(k,v);document.getElementById('cookieBar').style.display='none'}})();
+(function(){const el=document.getElementById('visitorCount');if(!el)return;function todayTR(){return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'})}const day=todayTR(),flagKey='cnr_visit_'+day,localKey='cnr_visit_count_'+day,already=localStorage.getItem(flagKey);function show(n){el.textContent=Number(n).toLocaleString('tr-TR')}function localBump(){let n=parseInt(localStorage.getItem(localKey)||'0',10);if(!already){n+=1;localStorage.setItem(localKey,String(n));localStorage.setItem(flagKey,'1')}show(n||1)}const shouldUp=!already;const url=shouldUp?'https://api.counterapi.dev/v1/cnrtech/daily-'+day+'/up':'https://api.counterapi.dev/v1/cnrtech/daily-'+day+'/';fetch(url,{method:'GET',mode:'cors'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{const n=(d&&(d.count??d.value))||0;if(shouldUp)localStorage.setItem(flagKey,'1');show(n);localStorage.setItem(localKey,String(n))}).catch(localBump)})();
 window.addEventListener('scroll',()=>{document.getElementById('mainHeader').classList.toggle('scrolled',window.scrollY>16)},{passive:true});
-
 const deadColors=['#000000','#FFFFFF','#FF0000','#00FF00','#0000FF','#FFFF00','#FF00FF','#00FFFF'];let deadIndex=0;
 function startDeadPixel(){deadIndex=0;const el=document.getElementById('deadPixelOverlay');el.style.display='flex';el.style.background=deadColors[0];document.body.style.overflow='hidden'}
 function nextDeadColor(){deadIndex=(deadIndex+1)%deadColors.length;document.getElementById('deadPixelOverlay').style.background=deadColors[deadIndex]}
