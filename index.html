@@ -44,7 +44,6 @@ body::before{
 }
 .container{max-width:960px;margin:0 auto;padding:0 20px}
 
-/* HEADER */
 header{
   padding:20px 0 18px;
   text-align:center;
@@ -81,7 +80,6 @@ header{
   letter-spacing:1px;font-weight:500;
 }
 
-/* HERO */
 .hero{padding:70px 0 50px;text-align:center;position:relative}
 .hero h1{
   font-size:clamp(1.6rem,4vw,2.1rem);
@@ -122,8 +120,17 @@ header{
   border-color:var(--cyan);
   box-shadow:0 0 20px rgba(0,229,255,.2);
 }
+.btn-amber{
+  background:linear-gradient(135deg,#e8a05a,#d4894a);
+  color:#1a1008;
+  box-shadow:0 4px 28px rgba(232,160,90,.35);
+  margin-top:22px;
+}
+.btn-amber:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 36px rgba(232,160,90,.5);
+}
 
-/* SECTIONS */
 .section-title{
   text-align:center;font-size:1.5rem;
   margin:52px 0 24px;font-weight:800;
@@ -135,7 +142,6 @@ header{
   background-clip:text;
 }
 
-/* CARDS */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -163,7 +169,6 @@ header{
 .card h3{color:var(--cyan);margin-bottom:8px;font-size:1.08rem;font-weight:700}
 .card p{color:var(--muted);font-size:.9rem;line-height:1.55}
 
-/* TOOLS */
 .tools-section{
   margin:52px 0 24px;padding:32px 22px;
   background:linear-gradient(160deg,rgba(0,40,70,.3),rgba(40,20,80,.2));
@@ -187,13 +192,13 @@ header{
   transform:translateX(4px);
 }
 
-/* MUMIRA */
 .mumira-box{
   margin-top:56px;padding:42px 22px 32px;
   background:linear-gradient(165deg,#1c1610 0%,#14100c 60%,#1a120c 100%);
   border-radius:24px;
   border:1px solid rgba(232,160,90,.25);
   box-shadow:0 0 60px rgba(232,160,90,.06);
+  text-align:center;
 }
 .mumira-box .section-title{color:#f5e0c8;margin-top:0}
 .mumira-box .section-title span{
@@ -201,9 +206,12 @@ header{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
 }
+.mumira-box .cards{text-align:left}
 .mumira-box .card{
   background:rgba(34,26,18,.9);
   border-color:rgba(232,160,90,.2);
+  text-decoration:none;display:block;color:inherit;
+  cursor:pointer;
 }
 .mumira-box .card::before{
   background:linear-gradient(90deg,transparent,#e8a05a,transparent);
@@ -215,7 +223,6 @@ header{
 .mumira-box .card h3{color:#e8c39e}
 .mumira-box .card p{color:#a89078}
 
-/* CONTACT */
 .contact{
   background:var(--card);
   border-radius:22px;padding:48px 28px;text-align:center;
@@ -237,14 +244,12 @@ header{
 }
 .email{color:var(--muted);margin-bottom:24px}
 
-/* FOOTER */
 footer{
   text-align:center;padding:32px 0;
   color:#4a5a72;font-size:.88rem;
   border-top:1px solid rgba(0,229,255,.1);
 }
 
-/* OVERLAYS */
 #deadPixelOverlay,#cpuOverlay,#gpuOverlay{
   display:none;position:fixed;inset:0;z-index:9999;
   background:#000;color:#fff;
@@ -327,14 +332,21 @@ footer{
 </div>
 </section>
 
-<section class="container">
+<section class="container" id="mumira">
 <div class="mumira-box">
 <div class="section-title">Mumira <span>El Yapımı Mumlar</span></div>
 <div class="cards">
-<div class="card"><h3>🕯️ El Yapımı</h3><p>Her mum özenle, tek tek el emeğiyle hazırlanır.</p></div>
-<div class="card"><h3>🌿 Doğal Malzeme</h3><p>Kaliteli balmumu ve doğal yağlar. Temiz yanış.</p></div>
-<div class="card"><h3>🎁 Özel Sipariş</h3><p>Renk, koku ve tasarım tercihine göre özel üretim.</p></div>
+<a class="card" href="https://www.shopier.com/mumiraonline" target="_blank" rel="noopener">
+<h3>🕯️ El Yapımı</h3><p>Her mum özenle, tek tek el emeğiyle hazırlanır.</p>
+</a>
+<a class="card" href="https://www.shopier.com/mumiraonline" target="_blank" rel="noopener">
+<h3>🌿 Doğal Malzeme</h3><p>Kaliteli balmumu ve doğal yağlar. Temiz yanış.</p>
+</a>
+<a class="card" href="https://www.shopier.com/mumiraonline" target="_blank" rel="noopener">
+<h3>🎁 Özel Sipariş</h3><p>Renk, koku ve tasarım tercihine göre özel üretim.</p>
+</a>
 </div>
+<a href="https://www.shopier.com/mumiraonline" class="btn btn-amber" target="_blank" rel="noopener">🛒 Shopier'de İncele / Satın Al</a>
 </div>
 </section>
 
