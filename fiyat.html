@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#060a14">
+<title>Fiyat Al | CNR Tech</title>
+<meta name="description" content="Ürün fotoğrafları ve benchmark görselleri ile fiyat teklifi alın.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#060a14;--card:rgba(12,20,38,.88);--cyan:#00e5ff;--violet:#7c5cff;--text:#e8f0ff;--muted:#8ba3c7;--border:rgba(0,229,255,.2);--amber:#e8a05a;--safe-b:env(safe-area-inset-bottom,0px)}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 40% at 20% 0%,rgba(0,229,255,.1),transparent),radial-gradient(ellipse 50% 40% at 90% 30%,rgba(124,92,255,.08),transparent),linear-gradient(180deg,#060a14,#0a1020)}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px calc(40px + var(--safe-b))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.top a{color:var(--cyan);text-decoration:none;font-weight:600;font-size:.92rem}
+h1{font-size:1.45rem;font-weight:800;background:linear-gradient(135deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.sub{color:var(--muted);font-size:.92rem;margin-bottom:22px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px 18px;backdrop-filter:blur(12px)}
+label{display:block;font-size:.82rem;font-weight:600;color:#b8d0e8;margin:14px 0 6px}
+label .req{color:#ff7a5c}
+input,select,textarea{
+  width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(0,229,255,.25);
+  background:rgba(0,20,40,.55);color:var(--text);font-family:inherit;font-size:1rem;
+  outline:none;transition:border .2s,box-shadow .2s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.15)}
+textarea{min-height:100px;resize:vertical}
+select{cursor:pointer}
+.hint{font-size:.78rem;color:#6a8099;margin-top:6px;line-height:1.45}
+.hint strong{color:var(--amber)}
+.bench-box{
+  display:none;margin-top:12px;padding:14px;border-radius:12px;
+  background:rgba(232,160,90,.08);border:1px solid rgba(232,160,90,.3);
+  font-size:.85rem;color:#e8c39e;line-height:1.5;
+}
+.bench-box.show{display:block}
+.bench-box ul{margin:8px 0 0 1.1em}
+.upload-zone{
+  margin-top:8px;border:2px dashed rgba(0,229,255,.35);border-radius:14px;
+  padding:22px 14px;text-align:center;cursor:pointer;transition:all .2s;
+  background:rgba(0,229,255,.04);
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--cyan);background:rgba(0,229,255,.1)}
+.upload-zone p{color:var(--muted);font-size:.9rem}
+.upload-zone .ico{font-size:1.8rem;margin-bottom:6px}
+#fileInput{display:none}
+.previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-top:14px}
+.previews .item{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid rgba(0,229,255,.25)}
+.previews img{width:100%;height:100%;object-fit:cover;display:block}
+.previews .rm{
+  position:absolute;top:4px;right:4px;width:24px;height:24px;border:none;border-radius:50%;
+  background:rgba(0,0,0,.75);color:#fff;cursor:pointer;font-size:.75rem;line-height:1;
+}
+.file-count{font-size:.8rem;color:var(--cyan);margin-top:8px;font-weight:600}
+.err{color:#ff7a5c;font-size:.85rem;margin-top:10px;display:none}
+.err.show{display:block}
+.promise{
+  margin:18px 0 8px;padding:14px 16px;border-radius:12px;
+  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);
+  font-size:.9rem;color:#c8e6f5;text-align:center;line-height:1.5;
+}
+.promise strong{color:var(--cyan)}
+.btn-submit{
+  width:100%;margin-top:16px;padding:16px;border:none;border-radius:999px;
+  background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018;
+  font-weight:800;font-size:1.05rem;cursor:pointer;font-family:inherit;
+  box-shadow:0 4px 28px rgba(0,229,255,.35);transition:transform .2s;
+}
+.btn-submit:hover{transform:translateY(-2px)}
+.btn-submit:disabled{opacity:.6;cursor:wait;transform:none}
+.success{
+  display:none;text-align:center;padding:40px 20px;
+}
+.success.show{display:block}
+.success .big{font-size:2.5rem;margin-bottom:12px}
+.success h2{font-size:1.3rem;margin-bottom:10px;color:var(--cyan)}
+.success p{color:var(--muted);margin-bottom:22px}
+.success a{color:var(--cyan);font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a href="index.html">← Ana Sayfa</a>
+    <a href="https://wa.me/905332595042" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+
+  <div id="formView">
+    <h1>💰 Fiyat Al</h1>
+    <p class="sub">Ürün görsellerini yükle, iletişim bilgilerini yaz. En kısa sürede dönüş yapacağız.</p>
+
+    <form class="card" id="fiyatForm" action="https://formsubmit.co/cnrtech@outlook.com.tr" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="CNR Tech — Yeni Fiyat Talebi">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://cnrtech.com.tr/fiyat.html?ok=1">
+      <input type="hidden" name="_autoresponse" value="Talebiniz CNR Tech'e ulaştı. En kısa sürede size dönüş yapacağız. — CNR Tech">
+
+      <label>Ad Soyad <span class="req">*</span></label>
+      <input type="text" name="ad_soyad" required placeholder="Adınız Soyadınız" autocomplete="name">
+
+      <div class="row2">
+        <div>
+          <label>Telefon <span class="req">*</span></label>
+          <input type="tel" name="telefon" required placeholder="05xx xxx xx xx" autocomplete="tel">
+        </div>
+        <div>
+          <label>E-posta</label>
+          <input type="email" name="email" placeholder="ornek@mail.com" autocomplete="email">
+        </div>
+      </div>
+
+      <label>Ürün tipi <span class="req">*</span></label>
+      <select name="urun_tipi" id="urunTipi" required>
+        <option value="">Seçiniz</option>
+        <option value="GPU">GPU / Ekran Kartı</option>
+        <option value="CPU">CPU / İşlemci</option>
+        <option value="Sistem">Tam Sistem / PC</option>
+        <option value="Diger">Diğer (aksesuar, parça vb.)</option>
+      </select>
+
+      <div class="bench-box" id="benchBox">
+        <strong>CPU / GPU için zorunlu:</strong>
+        <ul>
+          <li>Ürünün net, net fotoğrafları (en az 2 adet)</li>
+          <li><strong>En az 5 dakikalık</strong> benchmark / stress test görselleri veya ekran görüntüleri</li>
+          <li>Mümkünse sıcaklık, skor ve süre bilgisinin göründüğü kareler</li>
+        </ul>
+      </div>
+
+      <label>Ürün & test görselleri <span class="req">*</span></label>
+      <div class="upload-zone" id="uploadZone">
+        <div class="ico">📷</div>
+        <p>Tıkla veya sürükle-bırak<br><span style="font-size:.8rem">En az 2 görsel · JPG/PNG · max 10 MB/adet</span></p>
+        <input type="file" id="fileInput" name="attachment" accept="image/*" multiple>
+      </div>
+      <div class="file-count" id="fileCount"></div>
+      <div class="previews" id="previews"></div>
+      <p class="hint">İletişim bilgilerin net olsun. CPU/GPU için <strong>en az 5 dk benchmark test görseli</strong> eklemen fiyatlandırmayı hızlandırır.</p>
+
+      <label>Açıklama</label>
+      <textarea name="aciklama" placeholder="Model, durum, kutu/fatura, ek notlar..."></textarea>
+
+      <div class="promise">📬 Talebiniz <strong>cnrtech@outlook.com.tr</strong> adresine iletilir.<br><strong>En kısa sürede dönüş yapacağız.</strong></div>
+
+      <p class="err" id="formErr"></p>
+      <button type="submit" class="btn-submit" id="submitBtn">Fiyat Talebi Gönder</button>
+    </form>
+  </div>
+
+  <div class="success" id="successView">
+    <div class="big">✅</div>
+    <h2>Talebin alındı</h2>
+    <p>En kısa sürede dönüş yapacağız. Ek görsel veya not için WhatsApp’tan da yazabilirsin.</p>
+    <a href="index.html">Ana sayfaya dön</a>
+    &nbsp;·&nbsp;
+    <a href="https://wa.me/905332595042" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  if(params.get('ok')==='1'){
+    document.getElementById('formView').style.display='none';
+    document.getElementById('successView').classList.add('show');
+    return;
+  }
+
+  const urun = document.getElementById('urunTipi');
+  const bench = document.getElementById('benchBox');
+  const zone = document.getElementById('uploadZone');
+  const input = document.getElementById('fileInput');
+  const previews = document.getElementById('previews');
+  const fileCount = document.getElementById('fileCount');
+  const form = document.getElementById('fiyatForm');
+  const err = document.getElementById('formErr');
+  const btn = document.getElementById('submitBtn');
+
+  let files = [];
+
+  urun.addEventListener('change',()=>{
+    const v = urun.value;
+    bench.classList.toggle('show', v==='GPU' || v==='CPU');
+  });
+
+  zone.addEventListener('click',()=>input.click());
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('drag');
+    addFiles(e.dataTransfer.files);
+  });
+  input.addEventListener('change',()=>addFiles(input.files));
+
+  function addFiles(list){
+    for(const f of list){
+      if(!f.type.startsWith('image/')) continue;
+      if(f.size > 10*1024*1024){ showErr('Her görsel en fazla 10 MB olmalı.'); continue; }
+      if(files.length >= 8){ showErr('En fazla 8 görsel yükleyebilirsin.'); break; }
+      files.push(f);
+    }
+    render();
+    syncInput();
+  }
+
+  function render(){
+    previews.innerHTML = '';
+    files.forEach((f,i)=>{
+      const div = document.createElement('div');
+      div.className = 'item';
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(f);
+      img.alt = 'önizleme';
+      const rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'rm'; rm.textContent = '×';
+      rm.onclick = ()=>{ files.splice(i,1); render(); syncInput(); };
+      div.appendChild(img); div.appendChild(rm);
+      previews.appendChild(div);
+    });
+    fileCount.textContent = files.length ? (files.length + ' görsel seçildi') : '';
+    hideErr();
+  }
+
+  function syncInput(){
+    const dt = new DataTransfer();
+    files.forEach(f=>dt.items.add(f));
+    input.files = dt.files;
+  }
+
+  function showErr(t){ err.textContent=t; err.classList.add('show'); }
+  function hideErr(){ err.classList.remove('show'); err.textContent=''; }
+
+  form.addEventListener('submit',function(e){
+    hideErr();
+    const tip = urun.value;
+    if(!form.ad_soyad.value.trim()){ e.preventDefault(); showErr('Ad soyad zorunlu.'); return; }
+    if(!form.telefon.value.trim()){ e.preventDefault(); showErr('Telefon zorunlu.'); return; }
+    if(!tip){ e.preventDefault(); showErr('Ürün tipi seç.'); return; }
+    if(files.length < 2){
+      e.preventDefault();
+      showErr('En az 2 görsel yüklemelisin (ürün + test görselleri).');
+      return;
+    }
+    if((tip==='GPU'||tip==='CPU') && files.length < 2){
+      e.preventDefault();
+      showErr('CPU/GPU için ürün + en az 5 dk benchmark görselleri ekle.');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Gönderiliyor...';
+  });
+})();
+</script>
+</body>
+</html>
