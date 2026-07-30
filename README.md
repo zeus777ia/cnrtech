@@ -1,6 +1,6 @@
 # CNR Tech
 
-Amasya merkezli ikinci el elektronik, iPhone, GPU ve PC alım satım sitesi.
+Konya merkezli ikinci el elektronik, iPhone, GPU ve PC alım satım sitesi.
 
 **Domainler:**
 - cnrtech.com.tr
