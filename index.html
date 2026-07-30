@@ -39,7 +39,6 @@ body::before{
 }
 .container{max-width:960px;margin:0 auto;padding:0 20px}
 
-/* KEYFRAMES */
 @keyframes logoIn{
   0%{opacity:0;transform:scale(.55) rotate(-10deg)}
   65%{opacity:1;transform:scale(1.1) rotate(2deg)}
@@ -271,12 +270,7 @@ header.scrolled{
   background:linear-gradient(90deg,var(--cyan),var(--violet),var(--amber));
 }
 .contact h2{font-size:1.4rem;margin-bottom:8px;font-weight:800}
-.phone{
-  font-size:1.6rem;font-weight:800;margin:12px 0 6px;
-  background:linear-gradient(90deg,var(--cyan),#7dd3ff);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.email{color:var(--muted);margin-bottom:24px}
+.email{color:var(--muted);margin:14px 0 24px}
 footer{text-align:center;padding:32px 0;color:#4a5a72;font-size:.88rem;border-top:1px solid rgba(0,229,255,.1)}
 
 #deadPixelOverlay,#cpuOverlay,#gpuOverlay{
@@ -387,7 +381,6 @@ footer{text-align:center;padding:32px 0;color:#4a5a72;font-size:.88rem;border-to
 <div class="contact">
 <h2>İletişime Geç</h2>
 <p style="color:var(--muted);margin-bottom:8px">PC parça, bakım, test veya mum için yazman yeterli.</p>
-<div class="phone">0533 259 50 42</div>
 <div class="email">cnrtech@outlook.com.tr</div>
 <a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank">Hemen WhatsApp</a>
 </div>
@@ -431,7 +424,6 @@ footer{text-align:center;padding:32px 0;color:#4a5a72;font-size:.88rem;border-to
 </div>
 
 <script>
-// Header scroll shadow
 window.addEventListener('scroll',()=>{
   document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY>20);
 },{passive:true});
