@@ -44,6 +44,23 @@ body::before{
 }
 .container{max-width:960px;margin:0 auto;padding:0 20px}
 
+.top-banner{
+  background:linear-gradient(90deg,rgba(0,229,255,.12),rgba(124,92,255,.14),rgba(0,229,255,.12));
+  border-bottom:1px solid rgba(0,229,255,.22);
+  text-align:center;
+  padding:11px 16px;
+  font-size:.88rem;
+  font-weight:500;
+  color:#c8e6f5;
+  letter-spacing:.02em;
+}
+.top-banner strong{
+  background:linear-gradient(90deg,var(--cyan),#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  font-weight:700;
+}
+
 header{
   padding:20px 0 18px;
   text-align:center;
@@ -285,10 +302,16 @@ footer{
   .btn-secondary{margin-left:0;margin-top:12px}
   .top-nav a{font-size:.8rem;padding:8px 14px}
   .cards{grid-template-columns:1fr 1fr;gap:12px}
+  .top-banner{font-size:.78rem;padding:10px 12px;line-height:1.45}
 }
 </style>
 </head>
 <body>
+
+<div class="top-banner">
+<strong>AI destek · AI destekli uygulamalar · Site yönetimi · Tasarım & kodlama</strong> — hepsi tek çatı altında
+</div>
+
 <header>
 <div class="container">
 <div class="top-nav">
