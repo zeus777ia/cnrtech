@@ -27,16 +27,19 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 header{padding:14px 0 16px;text-align:center;border-bottom:1px solid var(--border);backdrop-filter:blur(14px);background:rgba(6,10,20,.75);position:sticky;top:0;z-index:100;animation:borderPulse 4s ease-in-out infinite;transition:background .35s,box-shadow .35s}
 header.scrolled{background:rgba(6,10,20,.94);box-shadow:0 10px 36px rgba(0,0,0,.45)}
 .logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
-.logo-img{width:72px;height:72px;object-fit:contain;border-radius:16px;display:block;background:transparent;border:none;padding:0;animation:logoIn .75s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .75s infinite;transition:transform .35s;cursor:pointer}
+.logo-img{width:72px;height:72px;object-fit:contain;border-radius:16px;display:block;animation:logoIn .75s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .75s infinite;transition:transform .35s;cursor:pointer}
 .logo-img:hover{transform:scale(1.14) rotate(-4deg);animation-play-state:paused;box-shadow:0 0 36px rgba(0,229,255,.75)}
 .logo-text{text-align:left}
 .logo-text .brand{font-size:1.25rem;font-weight:800;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;animation:brandIn .55s ease .28s both}
 .logo-text .tagline{color:var(--muted);font-size:.82rem;letter-spacing:.4px;font-weight:500;margin-top:2px;animation:brandIn .55s ease .42s both}
 .top-nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.top-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;font-size:.86rem;font-weight:600;text-decoration:none;color:var(--cyan);background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);transition:all .3s;position:relative;overflow:hidden;animation:navIn .5s cubic-bezier(.34,1.2,.64,1) both}
+.top-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;font-size:.86rem;font-weight:600;text-decoration:none;color:var(--cyan);background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);transition:all .3s;animation:navIn .5s cubic-bezier(.34,1.2,.64,1) both}
 .top-nav a:nth-child(1){animation-delay:.38s}.top-nav a:nth-child(2){animation-delay:.5s}.top-nav a:nth-child(3){animation-delay:.62s}
 .top-nav a:hover{background:rgba(0,229,255,.22);color:#fff;box-shadow:0 0 28px rgba(0,229,255,.4);transform:translateY(-3px) scale(1.06)}
 .top-nav a.ai{background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(124,92,255,.2));border-color:rgba(0,229,255,.45);color:#fff}
+.visitor-chip{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:7px 14px;border-radius:999px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.25);font-size:.82rem;color:var(--muted);animation:navIn .5s ease .75s both}
+.visitor-chip strong{color:var(--cyan);font-weight:700;font-variant-numeric:tabular-nums}
+.visitor-chip .dot{width:7px;height:7px;border-radius:50%;background:#25D366;box-shadow:0 0 8px #25D366;animation:logoGlow 2s ease-in-out infinite}
 .hero{padding:60px 0 48px;text-align:center}
 .hero h1{font-size:clamp(1.55rem,4vw,2.05rem);margin-bottom:14px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero p{color:var(--muted);font-size:1.08rem;max-width:540px;margin:0 auto 28px}
@@ -103,6 +106,10 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 6px}
 <a href="ai.html" class="ai">🤖 CNR AI</a>
 <a href="telefon.html">📱 Telefon Test</a>
 <a href="#araclar">🛠️ PC Testler</a>
+</div>
+<div class="visitor-chip" title="Her gün gece yarısı (Türkiye saati) sıfırlanır">
+<span class="dot" aria-hidden="true"></span>
+Bugün <strong id="visitorCount">—</strong> ziyaretçi
 </div>
 </div>
 </header>
@@ -184,6 +191,56 @@ footer a{color:var(--cyan);text-decoration:none;margin:0 6px}
     document.getElementById('cookieBar').style.display='none';
   };
 })();
+
+/* Günlük ziyaretçi sayacı — her gün TR saatiyle yeni anahtar */
+(function(){
+  const el = document.getElementById('visitorCount');
+  if(!el) return;
+  function todayTR(){
+    return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'});
+  }
+  const day = todayTR();
+  const flagKey = 'cnr_visit_'+day;
+  const localKey = 'cnr_visit_count_'+day;
+  const already = localStorage.getItem(flagKey);
+
+  function show(n){
+    el.textContent = Number(n).toLocaleString('tr-TR');
+  }
+
+  // Yerel yedek (API yoksa)
+  function localBump(){
+    let n = parseInt(localStorage.getItem(localKey)||'0',10);
+    if(!already){
+      n += 1;
+      localStorage.setItem(localKey, String(n));
+      localStorage.setItem(flagKey, '1');
+    }
+    show(n || 1);
+  }
+
+  const ns = 'cnrtech';
+  const key = 'daily-'+day;
+  const shouldUp = !already;
+
+  const url = shouldUp
+    ? 'https://api.counterapi.dev/v1/'+ns+'/'+key+'/up'
+    : 'https://api.counterapi.dev/v1/'+ns+'/'+key+'/';
+
+  fetch(url, {method:'GET', mode:'cors'})
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => {
+      const n = (d && (d.count ?? d.value)) || 0;
+      if(shouldUp) localStorage.setItem(flagKey, '1');
+      show(n);
+      localStorage.setItem(localKey, String(n));
+    })
+    .catch(() => {
+      // API erişilemezse yerel sayaç
+      localBump();
+    });
+})();
+
 window.addEventListener('scroll',()=>{document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY>20);},{passive:true});
 const deadColors=['#000000','#FFFFFF','#FF0000','#00FF00','#0000FF','#FFFF00','#FF00FF','#00FFFF'];let deadIndex=0;
 function startDeadPixel(){deadIndex=0;const el=document.getElementById('deadPixelOverlay');el.style.display='flex';el.style.background=deadColors[0];document.body.style.overflow='hidden'}
