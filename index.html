@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#060a14">
+<meta name="robots" content="index,follow">
 <title>CNR Tech | Elektronik & Mumira</title>
 <meta name="description" content="CNR Tech - GPU, PC parça, aksesuar, bakım, stress test, telefon test ve AI asistan. Konya.">
 <style>
@@ -11,7 +14,7 @@
 :root{--bg:#060a14;--card:rgba(12,20,38,.75);--cyan:#00e5ff;--violet:#7c5cff;--text:#e8f0ff;--muted:#8ba3c7;--border:rgba(0,229,255,.18);--amber:#e8a05a}
 html{scroll-behavior:smooth}
 body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(0,229,255,.12),transparent 50%),radial-gradient(ellipse 60% 40% at 90% 20%,rgba(124,92,255,.1),transparent 45%),radial-gradient(ellipse 50% 50% at 50% 100%,rgba(0,100,180,.08),transparent 50%),linear-gradient(180deg,#060a14 0%,#0a1020 50%,#080e1a 100%)}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(0,229,255,.12),transparent 50%),radial-gradient(ellipse 60% 40% at 90% 20%,rgba(124,92,255,.1),transparent 45%),linear-gradient(180deg,#060a14 0%,#0a1020 50%,#080e1a 100%)}
 .container{max-width:960px;margin:0 auto;padding:0 20px}
 @keyframes logoIn{0%{opacity:0;transform:scale(.55) rotate(-10deg)}65%{opacity:1;transform:scale(1.1) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 @keyframes logoGlow{0%,100%{box-shadow:0 0 12px rgba(0,229,255,.3)}50%{box-shadow:0 0 28px rgba(0,229,255,.6),0 0 48px rgba(124,92,255,.25)}}
@@ -19,60 +22,63 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 @keyframes navIn{0%{opacity:0;transform:translateY(14px) scale(.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes bannerShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes borderPulse{0%,100%{border-bottom-color:rgba(0,229,255,.15)}50%{border-bottom-color:rgba(0,229,255,.4)}}
-.top-banner{background:linear-gradient(90deg,rgba(0,229,255,.14),rgba(124,92,255,.18),rgba(0,229,255,.14),rgba(124,92,255,.12));background-size:200% 100%;animation:bannerShimmer 7s ease infinite;border-bottom:1px solid rgba(0,229,255,.22);text-align:center;padding:11px 16px;font-size:.88rem;font-weight:500;color:#c8e6f5;letter-spacing:.02em}
+.top-banner{background:linear-gradient(90deg,rgba(0,229,255,.14),rgba(124,92,255,.18),rgba(0,229,255,.14),rgba(124,92,255,.12));background-size:200% 100%;animation:bannerShimmer 7s ease infinite;border-bottom:1px solid rgba(0,229,255,.22);text-align:center;padding:11px 16px;font-size:.88rem;font-weight:500;color:#c8e6f5}
 .top-banner strong{background:linear-gradient(90deg,var(--cyan),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
 header{padding:14px 0 16px;text-align:center;border-bottom:1px solid var(--border);backdrop-filter:blur(14px);background:rgba(6,10,20,.75);position:sticky;top:0;z-index:100;animation:borderPulse 4s ease-in-out infinite;transition:background .35s,box-shadow .35s}
 header.scrolled{background:rgba(6,10,20,.94);box-shadow:0 10px 36px rgba(0,0,0,.45)}
 .logo-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
-.logo-img{width:72px;height:72px;object-fit:contain;border-radius:14px;display:block;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);padding:4px;animation:logoIn .75s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .75s infinite;transition:transform .35s cubic-bezier(.34,1.2,.64,1);cursor:pointer}
+.logo-img{width:72px;height:72px;object-fit:contain;border-radius:14px;display:block;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);padding:4px;animation:logoIn .75s cubic-bezier(.34,1.56,.64,1) both, logoGlow 3s ease-in-out .75s infinite;transition:transform .35s;cursor:pointer}
 .logo-img:hover{transform:scale(1.14) rotate(-4deg);animation-play-state:paused;box-shadow:0 0 36px rgba(0,229,255,.75)}
 .logo-text{text-align:left}
 .logo-text .brand{font-size:1.25rem;font-weight:800;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;animation:brandIn .55s ease .28s both}
 .logo-text .tagline{color:var(--muted);font-size:.82rem;letter-spacing:.4px;font-weight:500;margin-top:2px;animation:brandIn .55s ease .42s both}
 .top-nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.top-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;font-size:.86rem;font-weight:600;text-decoration:none;color:var(--cyan);background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);transition:all .3s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden;animation:navIn .5s cubic-bezier(.34,1.2,.64,1) both}
+.top-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;font-size:.86rem;font-weight:600;text-decoration:none;color:var(--cyan);background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);transition:all .3s;position:relative;overflow:hidden;animation:navIn .5s cubic-bezier(.34,1.2,.64,1) both}
 .top-nav a:nth-child(1){animation-delay:.38s}.top-nav a:nth-child(2){animation-delay:.5s}.top-nav a:nth-child(3){animation-delay:.62s}
-.top-nav a::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 25%,rgba(255,255,255,.2) 50%,transparent 75%);transform:translateX(-130%);transition:transform .55s ease}
-.top-nav a:hover::after{transform:translateX(130%)}
-.top-nav a:hover{background:rgba(0,229,255,.22);color:#fff;box-shadow:0 0 28px rgba(0,229,255,.4),0 6px 18px rgba(0,0,0,.25);transform:translateY(-3px) scale(1.06)}
+.top-nav a:hover{background:rgba(0,229,255,.22);color:#fff;box-shadow:0 0 28px rgba(0,229,255,.4);transform:translateY(-3px) scale(1.06)}
 .top-nav a.ai{background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(124,92,255,.2));border-color:rgba(0,229,255,.45);color:#fff}
-.top-nav a.ai:hover{box-shadow:0 0 32px rgba(124,92,255,.5),0 0 18px rgba(0,229,255,.3)}
 .hero{padding:60px 0 48px;text-align:center}
-.hero h1{font-size:clamp(1.55rem,4vw,2.05rem);margin-bottom:14px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
+.hero h1{font-size:clamp(1.55rem,4vw,2.05rem);margin-bottom:14px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero p{color:var(--muted);font-size:1.08rem;max-width:540px;margin:0 auto 28px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:999px;font-weight:700;text-decoration:none;font-size:.98rem;border:none;cursor:pointer;transition:all .3s;font-family:inherit}
 .btn-primary{background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018;box-shadow:0 4px 30px rgba(0,229,255,.4)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(0,229,255,.55)}
 .btn-secondary{background:transparent;border:1.5px solid rgba(0,229,255,.4);color:var(--cyan);margin-left:10px}
-.btn-secondary:hover{background:rgba(0,229,255,.1);border-color:var(--cyan)}
+.btn-secondary:hover{background:rgba(0,229,255,.1)}
 .btn-amber{background:linear-gradient(135deg,#e8a05a,#d4894a);color:#1a1008;box-shadow:0 4px 28px rgba(232,160,90,.35);margin-top:22px}
-.btn-amber:hover{transform:translateY(-3px);box-shadow:0 8px 36px rgba(232,160,90,.5)}
+.btn-amber:hover{transform:translateY(-3px)}
 .section-title{text-align:center;font-size:1.5rem;margin:52px 0 24px;font-weight:800}
 .section-title span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px 18px;backdrop-filter:blur(10px);transition:all .35s;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent);opacity:0;transition:opacity .35s}
-.card:hover{border-color:rgba(0,229,255,.4);transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 30px rgba(0,229,255,.1)}
-.card:hover::before{opacity:1}
+.card:hover{border-color:rgba(0,229,255,.4);transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
 .card h3{color:var(--cyan);margin-bottom:8px;font-size:1.08rem;font-weight:700}
 .card p{color:var(--muted);font-size:.9rem;line-height:1.55}
 .tools-section{margin:52px 0 24px;padding:32px 22px;background:linear-gradient(160deg,rgba(0,40,70,.3),rgba(40,20,80,.2));border:1px solid rgba(0,229,255,.22);border-radius:22px}
 .tool-btn{display:block;width:100%;margin:10px 0;padding:16px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.28);border-radius:14px;color:var(--cyan);font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s;text-decoration:none;text-align:center;font-family:inherit}
-.tool-btn:hover{background:rgba(0,229,255,.18);color:#fff;border-color:var(--cyan);box-shadow:0 0 28px rgba(0,229,255,.2);transform:translateX(4px)}
-.mumira-box{margin-top:56px;padding:42px 22px 32px;background:linear-gradient(165deg,#1c1610 0%,#14100c 60%,#1a120c 100%);border-radius:24px;border:1px solid rgba(232,160,90,.25);text-align:center}
+.tool-btn:hover{background:rgba(0,229,255,.18);color:#fff;border-color:var(--cyan);transform:translateX(4px)}
+.disclaimer{font-size:.8rem;color:#6a7f99;text-align:center;margin-top:14px;line-height:1.5}
+.mumira-box{margin-top:56px;padding:42px 22px 32px;background:linear-gradient(165deg,#1c1610,#14100c);border-radius:24px;border:1px solid rgba(232,160,90,.25);text-align:center}
 .mumira-box .section-title{color:#f5e0c8;margin-top:0}
 .mumira-box .section-title span{background:linear-gradient(90deg,#e8a05a,#f0c878);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .mumira-box .cards{text-align:left}
-.mumira-box .card{background:rgba(34,26,18,.9);border-color:rgba(232,160,90,.2);text-decoration:none;display:block;color:inherit;cursor:pointer}
-.mumira-box .card::before{background:linear-gradient(90deg,transparent,#e8a05a,transparent)}
-.mumira-box .card:hover{border-color:rgba(232,160,90,.45);box-shadow:0 12px 40px rgba(0,0,0,.3),0 0 25px rgba(232,160,90,.1)}
+.mumira-box .card{background:rgba(34,26,18,.9);border-color:rgba(232,160,90,.2);text-decoration:none;display:block;color:inherit}
 .mumira-box .card h3{color:#e8c39e}.mumira-box .card p{color:#a89078}
 .contact{background:var(--card);border-radius:22px;padding:48px 28px;text-align:center;margin:48px 0 40px;border:1px solid var(--border);position:relative;overflow:hidden}
 .contact::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--amber))}
 .contact h2{font-size:1.4rem;margin-bottom:8px;font-weight:800}
 .email{color:var(--muted);margin:14px 0 24px}
-footer{text-align:center;padding:32px 0;color:#4a5a72;font-size:.88rem;border-top:1px solid rgba(0,229,255,.1)}
-footer a{color:var(--cyan);text-decoration:none}
+footer{text-align:center;padding:32px 0 40px;color:#4a5a72;font-size:.85rem;border-top:1px solid rgba(0,229,255,.1)}
+footer a{color:var(--cyan);text-decoration:none;margin:0 6px}
+.legal-links{margin:12px 0 8px;line-height:2}
+#cookieBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:10001;background:rgba(8,14,28,.97);border-top:1px solid rgba(0,229,255,.3);padding:16px 18px;backdrop-filter:blur(12px);box-shadow:0 -8px 32px rgba(0,0,0,.4)}
+#cookieBar .inner{max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between}
+#cookieBar p{flex:1;min-width:220px;color:#b8cce0;font-size:.88rem;line-height:1.5;margin:0}
+#cookieBar a{color:var(--cyan)}
+#cookieBar .actions{display:flex;gap:10px;flex-wrap:wrap}
+#cookieBar button{padding:10px 18px;border-radius:999px;font-weight:700;font-size:.88rem;cursor:pointer;border:none;font-family:inherit}
+#cookieBar .accept{background:linear-gradient(135deg,var(--cyan),#00b4d8);color:#041018}
+#cookieBar .reject{background:transparent;border:1px solid rgba(0,229,255,.35);color:var(--cyan)}
 #deadPixelOverlay,#cpuOverlay,#gpuOverlay{display:none;position:fixed;inset:0;z-index:9999;background:#000;color:#fff;flex-direction:column;align-items:center;justify-content:center}
 #deadPixelOverlay{cursor:pointer}
 .test-controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10000;display:flex;gap:12px}
@@ -82,7 +88,7 @@ footer a{color:var(--cyan);text-decoration:none}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
 .stats-box .val{font-size:1.4rem;font-weight:800;margin:2px 0}.stats-box .label{font-size:.78rem;color:#8899aa}
 .temp-hot{color:#ff7a5c}.power{color:#ffd166}
-@media(max-width:600px){.logo-img{width:56px;height:56px}.logo-text .brand{font-size:1.1rem}.hero{padding:44px 0 32px}.hero h1{font-size:1.35rem}.btn-secondary{margin-left:0;margin-top:12px}.top-nav a{font-size:.8rem;padding:7px 12px}.cards{grid-template-columns:1fr 1fr;gap:12px}.top-banner{font-size:.78rem;padding:10px 12px;line-height:1.45}}
+@media(max-width:600px){.logo-img{width:56px;height:56px}.logo-text .brand{font-size:1.1rem}.hero{padding:44px 0 32px}.hero h1{font-size:1.35rem}.btn-secondary{margin-left:0;margin-top:12px}.top-nav a{font-size:.8rem;padding:7px 12px}.cards{grid-template-columns:1fr 1fr;gap:12px}.top-banner{font-size:.78rem;padding:10px 12px}}
 </style>
 </head>
 <body>
@@ -103,7 +109,7 @@ footer a{color:var(--cyan);text-decoration:none}
 <section class="hero"><div class="container">
 <h1>GPU · PC Parça · Aksesuar · Bakım</h1>
 <p>Konya merkezli al-sat ve teknik servis. Temiz ürün, dürüst fiyat. Ücretsiz test araçları ve AI asistan hazır.</p>
-<a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank">WhatsApp ile Yaz</a>
+<a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">WhatsApp ile Yaz</a>
 <a href="ai.html" class="btn btn-secondary">🤖 CNR AI</a>
 </div></section>
 <section class="container">
@@ -123,6 +129,7 @@ footer a{color:var(--cyan);text-decoration:none}
 <button class="tool-btn" onclick="startGpuTest()">🎮 GPU Stress Test</button>
 <a href="telefon.html" class="tool-btn">📱 Telefon Test Araçları →</a>
 <a href="ai.html" class="tool-btn" style="background:rgba(124,92,255,.15);border-color:rgba(124,92,255,.4);color:#c4b5ff">🤖 CNR AI — Günlük 5 Soru →</a>
+<p class="disclaimer">Uyarı: Stress testleri cihazı yorabilir. Sıcaklık/güç değerleri tahmindir. Kendi sorumluluğunuzda kullanın. <a href="kullanim.html" style="color:#00e5ff">Kullanım koşulları</a></p>
 </div></section>
 <section class="container" id="mumira">
 <div class="mumira-box">
@@ -139,13 +146,44 @@ footer a{color:var(--cyan);text-decoration:none}
 <h2>İletişime Geç</h2>
 <p style="color:var(--muted);margin-bottom:8px">PC parça, bakım, test veya mum için yazman yeterli.</p>
 <div class="email">cnrtech@outlook.com.tr</div>
-<a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank">Hemen WhatsApp</a>
+<a href="https://wa.me/905332595042" class="btn btn-primary" target="_blank" rel="noopener">Hemen WhatsApp</a>
 </div></section>
-<footer><div class="container">© 2026 CNR Tech & Mumira · Konya<br>cnrtech.com.tr<br><a href="gizlilik.html">Gizlilik Politikası</a></div></footer>
+<footer>
+<div class="container">
+© 2026 CNR Tech & Mumira · Konya<br>cnrtech.com.tr
+<div class="legal-links">
+<a href="gizlilik.html">Gizlilik</a> ·
+<a href="kvkk.html">KVKK</a> ·
+<a href="cerez.html">Çerezler</a> ·
+<a href="kullanim.html">Kullanım Koşulları</a>
+</div>
+<span style="font-size:.75rem;color:#3d4d60">Test ve AI çıktıları bilgilendirme amaçlıdır; profesyonel teşhis yerine geçmez.</span>
+</div>
+</footer>
+
+<div id="cookieBar" role="dialog" aria-label="Çerez onayı">
+<div class="inner">
+<p>Site; AI soru limiti için tarayıcı depolaması ve IP tespiti kullanabilir. Devam ederek <a href="cerez.html">Çerez Politikası</a> ve <a href="kvkk.html">KVKK</a> metinlerini kabul etmiş olursunuz.</p>
+<div class="actions">
+<button type="button" class="reject" onclick="cookieChoice('reject')">Sadece zorunlu</button>
+<button type="button" class="accept" onclick="cookieChoice('accept')">Kabul et</button>
+</div>
+</div>
+</div>
+
 <div id="deadPixelOverlay" onclick="nextDeadColor()"><div style="position:absolute;top:20px;left:0;right:0;text-align:center;font-size:.9rem;opacity:.7">Ekrana tıkla / tuşa bas → sonraki renk · ESC ile çık</div></div>
 <div id="cpuOverlay"><div class="stats-box"><h2>⚡ CPU Stress Test</h2><div class="stats-grid"><div><div class="val" id="cpuTime">0 sn</div><div class="label">Süre</div></div><div><div class="val" id="cpuOps">0</div><div class="label">İşlem/sn</div></div><div><div class="val" id="cpuScore">0</div><div class="label">Skor</div></div><div><div class="val temp-hot" id="cpuTemp">42°C</div><div class="label">Sıcaklık (tahmini)</div></div><div><div class="val power" id="cpuPower">38W</div><div class="label">Güç (tahmini)</div></div></div></div><div class="test-controls"><button onclick="stopCpuTest()">Durdur & Kapat</button></div></div>
 <div id="gpuOverlay"><canvas id="gpuCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:relative;z-index:2"><div class="stats-box"><h2>🎮 GPU Stress Test</h2><div class="stats-grid"><div><div class="val" id="gpuTime">0 sn</div><div class="label">Süre</div></div><div><div class="val" id="gpuFps">0</div><div class="label">FPS</div></div><div><div class="val" id="gpuParticles">900</div><div class="label">Parçacık</div></div><div><div class="val temp-hot" id="gpuTemp">48°C</div><div class="label">Sıcaklık (tahmini)</div></div><div><div class="val power" id="gpuPower">68W</div><div class="label">Güç (tahmini)</div></div></div></div><div class="test-controls" style="position:relative;transform:none;left:0;margin-top:18px"><button onclick="stopGpuTest()">Durdur & Kapat</button></div></div></div>
+
 <script>
+(function(){
+  const k='cnr_cookie_ok';
+  if(!localStorage.getItem(k)) document.getElementById('cookieBar').style.display='block';
+  window.cookieChoice=function(v){
+    localStorage.setItem(k,v);
+    document.getElementById('cookieBar').style.display='none';
+  };
+})();
 window.addEventListener('scroll',()=>{document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY>20);},{passive:true});
 const deadColors=['#000000','#FFFFFF','#FF0000','#00FF00','#0000FF','#FFFF00','#FF00FF','#00FFFF'];let deadIndex=0;
 function startDeadPixel(){deadIndex=0;const el=document.getElementById('deadPixelOverlay');el.style.display='flex';el.style.background=deadColors[0];document.body.style.overflow='hidden'}
@@ -158,7 +196,7 @@ let cpuRunning=false,cpuStart=0,cpuTimer,cpuOps=0,cpuLastOps=0;
 function startCpuTest(){document.getElementById('cpuOverlay').style.display='flex';document.body.style.overflow='hidden';cpuRunning=true;cpuStart=Date.now();cpuOps=0;cpuLastOps=0;['cpuTime','cpuOps','cpuScore'].forEach((id,i)=>document.getElementById(id).textContent=['0 sn','0','0'][i]);document.getElementById('cpuTemp').textContent='42°C';document.getElementById('cpuPower').textContent='38W';cpuTimer=setInterval(()=>{const sec=Math.floor((Date.now()-cpuStart)/1000);document.getElementById('cpuTime').textContent=sec+' sn';const ops=cpuOps-cpuLastOps;cpuLastOps=cpuOps;document.getElementById('cpuOps').textContent=ops.toLocaleString();document.getElementById('cpuScore').textContent=Math.floor(cpuOps/1000).toLocaleString();document.getElementById('cpuTemp').textContent=realisticTemp(42,72,sec).toFixed(1)+'°C';document.getElementById('cpuPower').textContent=Math.round(realisticPower(38,78,sec))+'W';},1000);function burn(){if(!cpuRunning)return;let x=0;for(let i=0;i<12e6;i++){x+=Math.sqrt(i)*Math.sin(i*0.001)*Math.cos(i*0.0007);if(i%1000===0)x=Math.abs(x)%10000}cpuOps+=12e6;for(let j=0;j<3;j++){let y=1;for(let k=0;k<2e6;k++)y*=1.0000001;cpuOps+=2e6}setTimeout(burn,0)}burn()}
 function stopCpuTest(){cpuRunning=false;clearInterval(cpuTimer);document.getElementById('cpuOverlay').style.display='none';document.body.style.overflow=''}
 let gpuRunning=false,gpuStart=0,gpuTimer,gpuAnim,gpuFrames=0,gpuLastFrames=0;
-function startGpuTest(){const overlay=document.getElementById('gpuOverlay'),canvas=document.getElementById('gpuCanvas');overlay.style.display='flex';document.body.style.overflow='hidden';canvas.width=window.innerWidth;canvas.height=window.innerHeight;const ctx=canvas.getContext('2d');gpuRunning=true;gpuStart=Date.now();gpuFrames=0;gpuLastFrames=0;document.getElementById('gpuTime').textContent='0 sn';document.getElementById('gpuFps').textContent='0';document.getElementById('gpuParticles').textContent='900';document.getElementById('gpuTemp').textContent='48°C';document.getElementById('gpuPower').textContent='68W';gpuTimer=setInterval(()=>{const sec=Math.floor((Date.now()-gpuStart)/1000);document.getElementById('gpuTime').textContent=sec+' sn';const fps=gpuFrames-gpuLastFrames;gpuLastFrames=gpuFrames;document.getElementById('gpuFps').textContent=fps;document.getElementById('gpuTemp').textContent=realisticTemp(48,76,sec).toFixed(1)+'°C';document.getElementById('gpuPower').textContent=Math.round(realisticPower(68,125,sec))+'W';},1000);const particles=[];for(let i=0;i<900;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*12,vy:(Math.random()-.5)*12,r:1.5+Math.random()*5,hue:Math.random()*360});function draw(){if(!gpuRunning)return;gpuFrames++;ctx.fillStyle='rgba(0,0,0,0.18)';ctx.fillRect(0,0,canvas.width,canvas.height);for(const p of particles){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;p.hue=(p.hue+1.5)%360;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`hsl(${p.hue},95%,60%)`;ctx.fill()}for(let i=0;i<80;i++){ctx.strokeStyle=`hsla(${(Date.now()/8+i*7)%360},90%,55%,0.7)`;ctx.lineWidth=1+Math.random()*2;ctx.beginPath();ctx.moveTo(Math.random()*canvas.width,Math.random()*canvas.height);ctx.bezierCurveTo(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*canvas.width,Math.random()*canvas.height);ctx.stroke()}for(let i=0;i<12;i++){const g=ctx.createRadialGradient(Math.random()*canvas.width,Math.random()*canvas.height,0,Math.random()*canvas.width,Math.random()*canvas.height,80+Math.random()*120);g.addColorStop(0,`hsla(${Math.random()*360},90%,60%,0.35)`);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.arc(Math.random()*canvas.width,Math.random()*canvas.height,100,0,Math.PI*2);ctx.fill()}gpuAnim=requestAnimationFrame(draw)}draw()}
+function startGpuTest(){const overlay=document.getElementById('gpuOverlay'),canvas=document.getElementById('gpuCanvas');overlay.style.display='flex';document.body.style.overflow='hidden';canvas.width=window.innerWidth;canvas.height=window.innerHeight;const ctx=canvas.getContext('2d');gpuRunning=true;gpuStart=Date.now();gpuFrames=0;gpuLastFrames=0;document.getElementById('gpuTime').textContent='0 sn';document.getElementById('gpuFps').textContent='0';document.getElementById('gpuParticles').textContent='900';document.getElementById('gpuTemp').textContent='48°C';document.getElementById('gpuPower').textContent='68W';gpuTimer=setInterval(()=>{const sec=Math.floor((Date.now()-gpuStart)/1000);document.getElementById('gpuTime').textContent=sec+' sn';const fps=gpuFrames-gpuLastFrames;gpuLastFrames=gpuFrames;document.getElementById('gpuFps').textContent=fps;document.getElementById('gpuTemp').textContent=realisticTemp(48,76,sec).toFixed(1)+'°C';document.getElementById('gpuPower').textContent=Math.round(realisticPower(68,125,sec))+'W';},1000);const particles=[];for(let i=0;i<900;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*12,vy:(Math.random()-.5)*12,r:1.5+Math.random()*5,hue:Math.random()*360});function draw(){if(!gpuRunning)return;gpuFrames++;ctx.fillStyle='rgba(0,0,0,0.18)';ctx.fillRect(0,0,canvas.width,canvas.height);for(const p of particles){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;p.hue=(p.hue+1.5)%360;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`hsl(${p.hue},95%,60%)`;ctx.fill()}for(let i=0;i<80;i++){ctx.strokeStyle=`hsla(${(Date.now()/8+i*7)%360},90%,55%,0.7)`;ctx.lineWidth=1+Math.random()*2;ctx.beginPath();ctx.moveTo(Math.random()*canvas.width,Math.random()*canvas.height);ctx.bezierCurveTo(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*canvas.width,Math.random()*canvas.height);ctx.stroke()}gpuAnim=requestAnimationFrame(draw)}draw()}
 function stopGpuTest(){gpuRunning=false;clearInterval(gpuTimer);cancelAnimationFrame(gpuAnim);document.getElementById('gpuOverlay').style.display='none';document.body.style.overflow=''}
 </script>
 </body>
