@@ -115,12 +115,10 @@ footer{text-align:center;padding:30px 0;color:#4a5a6a;font-size:.9rem;border-top
 
 <footer><div class="container">© 2026 CNR Tech & Mumira • Konya<br>cnrtech.com.tr</div></footer>
 
-<!-- DEAD PIXEL -->
 <div id="deadPixelOverlay" onclick="nextDeadColor()">
 <div style="position:absolute;top:20px;left:0;right:0;text-align:center;font-size:.9rem;opacity:.7">Ekrana tıkla / tuşa bas → sonraki renk • ESC ile çık</div>
 </div>
 
-<!-- CPU -->
 <div id="cpuOverlay">
 <div class="stats-box">
 <h2>⚡ CPU Stress Test</h2>
@@ -129,13 +127,12 @@ footer{text-align:center;padding:30px 0;color:#4a5a6a;font-size:.9rem;border-top
 <div><div class="val" id="cpuOps">0</div><div class="label">İşlem/sn</div></div>
 <div><div class="val" id="cpuScore">0</div><div class="label">Skor</div></div>
 <div><div class="val temp-hot" id="cpuTemp">42°C</div><div class="label">Sıcaklık (tahmini)</div></div>
-<div><div class="val power" id="cpuPower">35W</div><div class="label">Güç (tahmini)</div></div>
+<div><div class="val power" id="cpuPower">38W</div><div class="label">Güç (tahmini)</div></div>
 </div>
 </div>
 <div class="test-controls"><button onclick="stopCpuTest()">Durdur & Kapat</button></div>
 </div>
 
-<!-- GPU -->
 <div id="gpuOverlay">
 <canvas id="gpuCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
 <div style="position:relative;z-index:2">
@@ -146,7 +143,7 @@ footer{text-align:center;padding:30px 0;color:#4a5a6a;font-size:.9rem;border-top
 <div><div class="val" id="gpuFps">0</div><div class="label">FPS</div></div>
 <div><div class="val" id="gpuParticles">900</div><div class="label">Parçacık</div></div>
 <div><div class="val temp-hot" id="gpuTemp">48°C</div><div class="label">Sıcaklık (tahmini)</div></div>
-<div><div class="val power" id="gpuPower">65W</div><div class="label">Güç (tahmini)</div></div>
+<div><div class="val power" id="gpuPower">68W</div><div class="label">Güç (tahmini)</div></div>
 </div>
 </div>
 <div class="test-controls" style="position:relative;transform:none;left:0;margin-top:18px"><button onclick="stopGpuTest()">Durdur & Kapat</button></div>
@@ -161,6 +158,17 @@ function nextDeadColor(){deadIndex=(deadIndex+1)%deadColors.length;document.getE
 function closeDeadPixel(){document.getElementById('deadPixelOverlay').style.display='none';document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(document.getElementById('deadPixelOverlay').style.display==='flex'){if(e.key==='Escape')closeDeadPixel();else nextDeadColor()}});
 
+// Gerçekçi asymptotic formül: yavaş yükselip belirli değerde dengelenir
+function realisticTemp(base, max, sec) {
+  // 1 - e^(-k*t) formülü
+  const k = 0.045;
+  return base + (max - base) * (1 - Math.exp(-k * sec)) + (Math.random() * 0.8 - 0.4);
+}
+function realisticPower(base, max, sec) {
+  const k = 0.05;
+  return base + (max - base) * (1 - Math.exp(-k * sec)) + (Math.random() * 2 - 1);
+}
+
 // CPU
 let cpuRunning=false,cpuStart=0,cpuTimer,cpuOps=0,cpuLastOps=0;
 function startCpuTest(){
@@ -171,7 +179,7 @@ function startCpuTest(){
   document.getElementById('cpuOps').textContent='0';
   document.getElementById('cpuScore').textContent='0';
   document.getElementById('cpuTemp').textContent='42°C';
-  document.getElementById('cpuPower').textContent='35W';
+  document.getElementById('cpuPower').textContent='38W';
 
   cpuTimer=setInterval(()=>{
     const sec=Math.floor((Date.now()-cpuStart)/1000);
@@ -180,12 +188,14 @@ function startCpuTest(){
     cpuLastOps=cpuOps;
     document.getElementById('cpuOps').textContent=opsPerSec.toLocaleString();
     document.getElementById('cpuScore').textContent=Math.floor(cpuOps/1000).toLocaleString();
-    // Tahmini sıcaklık: 42 → 88 arası yavaş yükselir
-    const temp=Math.min(88, 42 + sec*1.1 + Math.random()*1.5);
-    document.getElementById('cpuTemp').textContent=temp.toFixed(1)+'°C';
-    // Tahmini güç: 35 → 95W
-    const power=Math.min(95, 35 + sec*1.4 + Math.random()*3);
-    document.getElementById('cpuPower').textContent=Math.round(power)+'W';
+
+    // CPU: 42°C → max ~72°C (tipik soğutmalı sistem)
+    const temp = realisticTemp(42, 72, sec);
+    document.getElementById('cpuTemp').textContent = temp.toFixed(1) + '°C';
+
+    // CPU güç: 38W → max ~78W
+    const power = realisticPower(38, 78, sec);
+    document.getElementById('cpuPower').textContent = Math.round(power) + 'W';
   },1000);
 
   function burn(){
@@ -227,7 +237,7 @@ function startGpuTest(){
   document.getElementById('gpuFps').textContent='0';
   document.getElementById('gpuParticles').textContent='900';
   document.getElementById('gpuTemp').textContent='48°C';
-  document.getElementById('gpuPower').textContent='65W';
+  document.getElementById('gpuPower').textContent='68W';
 
   gpuTimer=setInterval(()=>{
     const sec=Math.floor((Date.now()-gpuStart)/1000);
@@ -235,12 +245,14 @@ function startGpuTest(){
     const fps=gpuFrames-gpuLastFrames;
     gpuLastFrames=gpuFrames;
     document.getElementById('gpuFps').textContent=fps;
-    // Tahmini sıcaklık: 48 → 92
-    const temp=Math.min(92, 48 + sec*1.3 + Math.random()*2);
-    document.getElementById('gpuTemp').textContent=temp.toFixed(1)+'°C';
-    // Tahmini güç: 65 → 180W
-    const power=Math.min(180, 65 + sec*2.8 + Math.random()*5);
-    document.getElementById('gpuPower').textContent=Math.round(power)+'W';
+
+    // GPU: 48°C → max ~76°C (canvas yükü için gerçekçi)
+    const temp = realisticTemp(48, 76, sec);
+    document.getElementById('gpuTemp').textContent = temp.toFixed(1) + '°C';
+
+    // GPU güç: 68W → max ~125W
+    const power = realisticPower(68, 125, sec);
+    document.getElementById('gpuPower').textContent = Math.round(power) + 'W';
   },1000);
 
   const particles=[];
